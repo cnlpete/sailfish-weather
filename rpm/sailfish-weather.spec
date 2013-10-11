@@ -12,8 +12,11 @@ BuildRequires:  pkgconfig(Qt5Quick)
 BuildRequires:  pkgconfig(Qt5Gui)
 BuildRequires:  desktop-file-utils
 BuildRequires:  pkgconfig(qdeclarative5-boostable)
+BuildRequires:  qt5-qttools
+BuildRequires:  qt5-qttools-linguist
 
 Requires:  sailfishsilica-qt5
+Requires:  sailfish-components-weather-qt5
 Requires:  mapplauncherd-booster-silica-qt5
 
 %description
