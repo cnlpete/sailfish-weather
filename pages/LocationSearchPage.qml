@@ -19,6 +19,7 @@ Page {
                 id: searchField
                 //% "Search locations"
                 placeholderText: qsTrId("weather-la-search_locations")
+                focus: locationListView.atYBeginning
                 width: parent.width
                 Binding {
                     target: locationsModel
