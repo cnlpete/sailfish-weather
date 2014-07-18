@@ -54,7 +54,7 @@ Page {
             id: searchResultItem
             height: Theme.itemSizeMedium
             onClicked: {
-                savedWeathersModel.save({
+                savedWeathersModel.addLocation({
                                             "locationId": model.locationId,
                                             "city": model.city,
                                             "state": model.state,
