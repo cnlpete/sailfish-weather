@@ -56,7 +56,7 @@ Page {
                 Behavior on opacity { FadeAnimation {}}
                 weather: savedWeathersModel.currentWeather
                 onClicked: {
-                    pageStack.push("WeatherPage.qml", {"weather": savedWeathersModel.currentWeather })
+                    pageStack.push("WeatherPage.qml", {"weather": weather, "weatherModel": weatherModels[weather.locationId] })
                 }
             }
             Item {
@@ -96,9 +96,11 @@ Page {
                 if (model.status == Weather.Error) {
                     weatherApplication.reload(model.locationId)
                 } else {
-                    pageStack.push("WeatherPage.qml", {"weather": savedWeathersModel.get(model.locationId) })
+                    pageStack.push("WeatherPage.qml", {"weather": savedWeathersModel.get(model.locationId),
+                                       "weatherModel": weatherModels[model.locationId] })
                 }
             }
+
             Image {
                 id: icon
                 x: Theme.paddingLarge
