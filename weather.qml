@@ -2,6 +2,7 @@ import QtQuick 2.1
 import Sailfish.Silica 1.0
 import Sailfish.Weather 1.0
 import "pages"
+import "cover"
 
 ApplicationWindow {
     id: weatherApplication
@@ -10,7 +11,7 @@ ApplicationWindow {
                                         && savedWeathersModel.currentWeather.status == Weather.Ready
 
     initialPage: Component { MainPage {} }
-    cover: Qt.resolvedUrl("cover/WeatherCover.qml")
+    cover: Component { WeatherCover {} }
 
     signal reload(int locationId)
     signal reloadAll()
@@ -35,7 +36,7 @@ ApplicationWindow {
             onLoaded: {
                 if (count > 0) {
                     var weather = get(0)
-                    savedWeathersModel.update({"locationId": model.locationId,
+                    savedWeathersModel.update({  "locationId": model.locationId,
                                                   "city": model.city,
                                                   "state": model.state,
                                                   "country": model.country,

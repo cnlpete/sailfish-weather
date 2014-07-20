@@ -40,8 +40,12 @@ Page {
         ViewPlaceholder {
             id: placeHolder
             //: Placeholder displayed when user hasn't yet typed a search string
-            //% "Search and select new location or save the current one"
-            text: qsTrId("weather-la-search-or-select-location")
+            text: locationsModel.status === XmlListModel.Error ?
+                      //% "Loading failed"
+                      qsTrId("weather-la-loading_failed")
+                    :
+                      //% "Search and select new location or save the current one"
+                      qsTrId("weather-la-search-or-select-location")
             enabled: locationListView.count == 0 && locationsModel.filter.length < 3
 
             // TODO: add offset property to ViewPlaceholder

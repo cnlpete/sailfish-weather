@@ -27,30 +27,6 @@ Page {
         header: Column {
             width: parent.width
             spacing: Theme.paddingLarge
-            PageHeader {
-                title: savedWeathersModel.currentWeather ? savedWeathersModel.currentWeather.city : ""
-                Label {
-                    id: secondaryLabel
-                    font.pixelSize: Theme.fontSizeSmall
-                    color: Theme.secondaryHighlightColor
-                    text: savedWeathersModel.currentWeather ? savedWeathersModel.currentWeather.state + "," + savedWeathersModel.currentWeather.country
-                                                            : ""
-                    horizontalAlignment: Text.AlignRight
-                    anchors {
-                        left: parent.left
-                        right: parent.right
-                        bottom: parent.bottom
-                        bottomMargin: -Theme.paddingSmall
-                        rightMargin: Theme.paddingLarge
-                    }
-                }
-                OpacityRampEffect {
-                    sourceItem: secondaryLabel
-                    direction: OpacityRamp.RightToLeft
-                    offset: 0.75
-                    slope: 4
-                }
-            }
             WeatherItem {
                 opacity: currentWeatherAvailable ? 1.0 : 0.0
                 Behavior on opacity { FadeAnimation {}}
@@ -61,7 +37,7 @@ Page {
             }
             Item {
                 width: parent.width
-                height: Theme.paddingLarge
+                height: Theme.paddingMedium
             }
         }
         PlaceholderItem {
@@ -87,7 +63,7 @@ Page {
         model: savedWeathersModel
         delegate: ListItem {
             menu: contextMenuComponent
-            implicitHeight: Theme.itemSizeMedium
+            contentHeight: Theme.itemSizeMedium
             function remove() {
                 remorseAction("Deleting", function() { savedWeathersModel.remove(locationId) })
             }
@@ -148,7 +124,7 @@ Page {
                 // TODO: support Fahrenheit
                 text: model.temperature + "\u00B0"
                 color: highlighted ? Theme.secondaryHighlightColor : Theme.secondaryColor
-                font.pixelSize: Theme.fontSizeLarge
+                font.pixelSize: Theme.fontSizeHuge
                 anchors {
                     verticalCenter: parent.verticalCenter
                     right: parent.right
