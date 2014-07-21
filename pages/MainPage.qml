@@ -88,7 +88,6 @@ Page {
         delegate: ListItem {
             menu: contextMenuComponent
             implicitHeight: Theme.itemSizeMedium
-            visible: savedWeathersModel.currentLocationId != model.locationId
             function remove() {
                 remorseAction("Deleting", function() { savedWeathersModel.remove(locationId) })
             }
@@ -137,7 +136,7 @@ Page {
                               //% "Loading failed. Tap to reload"
                               qsTrId("weather-la-loading_failed_tap_to_reload")
                             :
-                              model.state + ", " + model.country
+                              model.description
                     truncationMode: model.status === Weather.Error ? TruncationMode.None : TruncationMode.Fade
                     font.pixelSize: Theme.fontSizeSmall
                 }
