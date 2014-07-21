@@ -57,7 +57,7 @@ Page {
                 enabled: false // Enable once GPS exists
                 anchors {
                     top: parent.bottom
-                    topMargin: -Theme.paddingMedium
+                    topMargin: Theme.paddingMedium
                     horizontalCenter: parent.horizontalCenter
                 }
             }

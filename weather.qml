@@ -34,18 +34,16 @@ ApplicationWindow {
             locationId: model.locationId
             onError: if (model.status == Weather.Loading) savedWeathersModel.reportError(model.locationId)
             onLoaded: {
-                if (count > 0) {
-                    var weather = get(0)
-                    savedWeathersModel.update({  "locationId": model.locationId,
-                                                  "city": model.city,
-                                                  "state": model.state,
-                                                  "country": model.country,
-                                                  "temperature": weather.temperature,
-                                                  "weatherType": weather.weatherType,
-                                                  "description": weather.description,
-                                                  "timestamp": weather.timestamp
-                                              })
-                }
+                savedWeathersModel.update({   "locationId": model.locationId,
+                                              "city": model.city,
+                                              "state": model.state,
+                                              "country": model.country,
+                                              "temperature": currentWeather.temperature,
+                                              "temperatureFeel": currentWeather.temperatureFeel,
+                                              "weatherType": currentWeather.weatherType,
+                                              "description": currentWeather.description,
+                                              "timestamp": currentWeather.timestamp
+                                          })
             }
             property Connections reloadOnOpen: Connections {
                 target: Qt.application

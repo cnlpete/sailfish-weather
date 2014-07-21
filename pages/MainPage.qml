@@ -37,7 +37,7 @@ Page {
             }
             Item {
                 width: parent.width
-                height: Theme.paddingMedium
+                height: Theme.paddingLarge
             }
         }
         PlaceholderItem {

@@ -18,11 +18,9 @@ CoverBackground {
             anchors.horizontalCenter: parent.horizontalCenter
         }
         TemperatureLabel {
-            text: weather ? weather.temperature : ""
-            anchors {
-                horizontalCenter: parent.horizontalCenter
-                horizontalCenterOffset: horizontalOffset
-            }
+            temperature: weather ? weather.temperature : ""
+            temperatureFeel: weather ? weather.temperatureFeel : ""
+            anchors.horizontalCenter: parent.horizontalCenter
         }
     }
     CoverPlaceholder {
