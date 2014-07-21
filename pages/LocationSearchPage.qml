@@ -1,6 +1,7 @@
 import QtQuick 2.0
 import Sailfish.Silica 1.0
 import Sailfish.Weather 1.0
+import QtQuick.XmlListModel 2.0
 
 Page {
     LocationsModel { id: locationsModel }
@@ -29,12 +30,19 @@ Page {
                 Component.onCompleted: searchField.forceActiveFocus()
             }
         }
+        BusyIndicator {
+            running: locationsModel.status === XmlListModel.Loading && locationsModel.filter.length > 2
+            anchors.centerIn: placeHolder
+            parent: placeHolder.parent
+            size: BusyIndicatorSize.Large
+        }
+
         ViewPlaceholder {
             id: placeHolder
             //: Placeholder displayed when user hasn't yet typed a search string
             //% "Search and select new location or save the current one"
             text: qsTrId("weather-la-search-or-select-location")
-            enabled: locationListView.count == 0
+            enabled: locationListView.count == 0 && locationsModel.filter.length < 3
 
             // TODO: add offset property to ViewPlaceholder
             y: locationListView.originY + Theme.paddingLarge
