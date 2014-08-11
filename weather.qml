@@ -16,6 +16,7 @@ ApplicationWindow {
     signal reload(int locationId)
     signal reloadAll()
 
+    TemperatureConverter { id: converter }
     Instantiator {
         onObjectAdded: {
             if (weatherModels) {

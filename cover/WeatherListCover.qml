@@ -26,7 +26,7 @@ Item {
             }
             Label {
                 width: parent.width
-                text: model.status === Weather.Error ? model.city : model.temperature + "\u00B0" + " " + model.city
+                text: model.status === Weather.Error ? model.city : converter.format(model.temperature) + "\u00B0" + " " + model.city
                 truncationMode: TruncationMode.Fade
             }
             Label {

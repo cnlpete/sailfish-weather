@@ -13,8 +13,8 @@ Page {
                 onClicked: pageStack.push(Qt.resolvedUrl("LocationSearchPage.qml"))
             }
             MenuItem {
-                //% "Check weather"
-                text: qsTrId("weather-me-check_weather")
+                //% "Update"
+                text: qsTrId("weather-me-update")
                 onClicked: reloadTimer.restart()
                 Timer {
                     id: reloadTimer
@@ -121,8 +121,7 @@ Page {
             }
             Label {
                 id: temperatureLabel
-                // TODO: support Fahrenheit
-                text: model.temperature + "\u00B0"
+                text: converter.format(model.temperature) + "\u00B0"
                 color: highlighted ? Theme.secondaryHighlightColor : Theme.secondaryColor
                 font.pixelSize: Theme.fontSizeHuge
                 anchors {

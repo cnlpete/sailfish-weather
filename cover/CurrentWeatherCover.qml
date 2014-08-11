@@ -17,7 +17,7 @@ Item {
     }
     Label {
         font.pixelSize: Theme.fontSizeHuge
-        text: weather ? weather.temperature + "\u00B0" : ""
+        text: weather ? converter.format(weather.temperature) + "\u00B0" : ""
         anchors.centerIn: weatherImage
     }
     Label {
