@@ -99,7 +99,7 @@ Page {
                 Label {
                     width: parent.width
                     textFormat: Text.StyledText
-                    text: Theme.highlightText(model.state + ", " + model.country, locationsModel.filter, Theme.highlightColor)
+                    text: Theme.highlightText((model.state.length > "" ? model.state + ", " : "") + model.country, locationsModel.filter, Theme.highlightColor)
                     color: highlighted ? Theme.secondaryHighlightColor : Theme.secondaryColor
                     font.pixelSize: Theme.fontSizeSmall
                     truncationMode: TruncationMode.Fade
