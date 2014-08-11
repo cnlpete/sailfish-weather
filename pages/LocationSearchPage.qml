@@ -4,6 +4,7 @@ import Sailfish.Weather 1.0
 import QtQuick.XmlListModel 2.0
 
 Page {
+    property bool error: locationsModel.status === XmlListModel.Error
     LocationsModel { id: locationsModel }
     SilicaListView {
         id: locationListView
@@ -39,22 +40,23 @@ Page {
 
         ViewPlaceholder {
             id: placeHolder
-            //: Placeholder displayed when user hasn't yet typed a search string
-            text: locationsModel.status === XmlListModel.Error ?
-                      //% "Loading failed"
-                      qsTrId("weather-la-loading_failed")
-                    :
-                      //% "Search and select new location or save the current one"
-                      qsTrId("weather-la-search-or-select-location")
-            enabled: locationListView.count == 0 && locationsModel.filter.length < 3
+            //% "Loading failed"
+            text: error ? qsTrId("weather-la-loading_failed")
+                          //: Placeholder displayed when user hasn't yet typed a search string
+                          //% "Search and select new location or save the current one"
+                        : qsTrId("weather-la-search-or-select-location")
+            enabled: error || locationListView.count == 0 && locationsModel.filter.length < 3
 
             // TODO: add offset property to ViewPlaceholder
             y: locationListView.originY + Theme.paddingLarge
                + (locationListView.headerItem ? locationListView.headerItem.height : 0)
             Button {
-                //% "Save current"
-                text: qsTrId("weather-bt-save_current")
-                enabled: false // Enable once GPS exists
+                //% "Try again"
+                text: error ? qsTrId("weather-la-try_again")
+                              //% "Save current"
+                            : qsTrId("weather-bt-save_current")
+                enabled: error // Enable once GPS exists
+                onClicked: locationsModel.reload()
                 anchors {
                     top: parent.bottom
                     topMargin: Theme.paddingMedium
