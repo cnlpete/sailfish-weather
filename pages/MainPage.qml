@@ -14,7 +14,7 @@ Page {
             }
             MenuItem {
                 //% "Check weather"
-                text: qsTrId("weather-me-weather")
+                text: qsTrId("weather-me-check_weather")
                 onClicked: reloadTimer.restart()
                 Timer {
                     id: reloadTimer
@@ -130,6 +130,7 @@ Page {
                     right: parent.right
                     rightMargin: Theme.paddingLarge
                 }
+                width: visible ? implicitWidth : 0
                 visible: model.status == Weather.Ready
             }
             Component {
@@ -143,6 +144,7 @@ Page {
                     MenuItem {
                         //% "Set as current"
                         text: qsTrId("weather-me-set_as_current")
+                        visible: model.status == Weather.Ready
                         onClicked: savedWeathersModel.currentLocationId = model.locationId
                     }
                 }
