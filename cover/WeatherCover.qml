@@ -3,30 +3,65 @@ import Sailfish.Silica 1.0
 import Sailfish.Weather 1.0
 
 CoverBackground {
+    id: cover
+
     property var weather: savedWeathersModel.currentWeather
 
-    Column {
-        width: parent.width
-        visible: currentWeatherAvailable
-        y: Theme.paddingLarge
-        WeatherImage {
-            width: Screen.width/3
-            height: Screen.width/3
-            sourceSize.width: Screen.width/3
-            sourceSize.height: Screen.width/3
-            weatherType: weather && weather.weatherType.length > 0 ? weather.weatherType : ""
-            anchors.horizontalCenter: parent.horizontalCenter
-        }
-        TemperatureLabel {
-            temperature: weather ? weather.temperature : ""
-            temperatureFeel: weather ? weather.temperatureFeel : ""
-            anchors.horizontalCenter: parent.horizontalCenter
+    property bool current: true
+    property bool ready: loaded && !error
+    property bool loaded: savedWeathersModel.currentWeather
+    property bool error: loaded && savedWeathersModel.currentWeather.status == Weather.Error
+
+    CoverPlaceholder {
+        visible: !ready
+        text: !loaded ? //% "Select location to check weather"
+                        qsTrId("weather-la-select_location_to_check_weather")
+                      : error ? //% "Unable to connect, try again"
+                                qsTrId("weather-la-unable_to_connect_try_again")
+                              : ""
+    }
+    Loader {
+        active: ready
+        opacity: ready && current ? 1.0 : 0.0
+        source: "CurrentWeatherCover.qml"
+        Behavior on opacity { FadeAnimation {} }
+        anchors.fill: parent
+    }
+    Loader {
+        active: ready && savedWeathersModel.count > 1
+        opacity: ready && !current ? 1.0 : 0.0
+        source: "WeatherListCover.qml"
+        Behavior on opacity { FadeAnimation {} }
+        anchors.fill: parent
+    }
+
+    CoverActionList {
+        enabled: !loaded
+        CoverAction {
+            iconSource: "image://theme/icon-cover-search"
+            onTriggered: {
+                weatherApplication.activate()
+                pageStack.push(Qt.resolvedUrl("../pages/LocationSearchPage.qml"), undefined, PageStackAction.Immediate)
+            }
         }
     }
-    CoverPlaceholder {
-        //% "Add your location"
-        text: qsTrId("weather-la-add_your_location")
-        icon.source: "image://theme/icon-launcher-weather"
-        visible: !currentWeatherAvailable
+    CoverActionList {
+        enabled: error
+        CoverAction {
+            iconSource: "image://theme/icon-cover-sync"
+            onTriggered: {
+                weatherApplication.reloadAll()
+            }
+        }
+    }
+    CoverActionList {
+        enabled: ready && savedWeathersModel.count > 1
+        CoverAction {
+            iconSource: current ? "image://theme/icon-cover-previous"
+                                    : "image://theme/icon-cover-next"
+            onTriggered: {
+                current = !current
+            }
+        }
     }
 }
