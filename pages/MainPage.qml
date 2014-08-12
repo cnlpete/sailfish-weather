@@ -2,7 +2,7 @@ import QtQuick 2.0
 import Sailfish.Silica 1.0
 import Sailfish.Weather 1.0
 
-Page {    
+Page {
     SilicaListView {
         id: weatherListView
 
@@ -148,6 +148,14 @@ Page {
                         onClicked: savedWeathersModel.currentLocationId = model.locationId
                     }
                 }
+            }
+        }
+        footer: Item {
+            width: parent.width
+            height: disclaimer.height
+            ProviderDisclaimer {
+                id: disclaimer
+                y: Math.max(0, Screen.height - weatherListView.contentHeight)
             }
         }
         VerticalScrollDecorator {}
