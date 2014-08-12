@@ -121,7 +121,7 @@ Page {
             }
             Label {
                 id: temperatureLabel
-                text: converter.format(model.temperature) + "\u00B0"
+                text: TemperatureConverter.format(model.temperature) + "\u00B0"
                 color: highlighted ? Theme.secondaryHighlightColor : Theme.secondaryColor
                 font.pixelSize: Theme.fontSizeHuge
                 anchors {

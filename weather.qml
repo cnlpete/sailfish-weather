@@ -16,7 +16,6 @@ ApplicationWindow {
     signal reload(int locationId)
     signal reloadAll()
 
-    TemperatureConverter { id: converter }
     Instantiator {
         onObjectAdded: {
             if (weatherModels) {
@@ -31,7 +30,6 @@ ApplicationWindow {
         model: SavedWeathersModel { id: savedWeathersModel }
         WeatherModel {
             id: weatherModel
-            // TODO: instead pass only one location object
             locationId: model.locationId
             onError: if (model.status == Weather.Loading) savedWeathersModel.reportError(model.locationId)
             onLoaded: {
