@@ -16,6 +16,7 @@ Page {
                 //% "Update"
                 text: qsTrId("weather-me-update")
                 onClicked: reloadTimer.restart()
+                enabled: savedWeathersModel.count > 0
                 Timer {
                     id: reloadTimer
                     interval: 500

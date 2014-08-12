@@ -16,6 +16,14 @@ ApplicationWindow {
     signal reload(int locationId)
     signal reloadAll()
 
+    Connections {
+        target: Qt.application
+        onActiveChanged: {
+            if (!Qt.application.active) {
+                savedWeathersModel.save()
+            }
+        }
+    }
     Instantiator {
         onObjectAdded: {
             if (weatherModels) {
@@ -46,7 +54,11 @@ ApplicationWindow {
             }
             property Connections reloadOnOpen: Connections {
                 target: Qt.application
-                onActiveChanged: if (Qt.application.active) weatherModel.reload()
+                onActiveChanged: {
+                    if (Qt.application.active) {
+                        weatherModel.reload()
+                    }
+                }
             }
             property Connections reloadOnUsersRequest: Connections {
                 target: weatherApplication
