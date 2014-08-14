@@ -21,7 +21,7 @@ Item {
         anchors.centerIn: weatherImage
     }
     Label {
-        text: weather.description
+        text: weather ? weather.description : ""
         horizontalAlignment: Text.AlignHCenter
         wrapMode: Text.Wrap
         maximumLineCount: 3

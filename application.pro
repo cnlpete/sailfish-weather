@@ -4,7 +4,7 @@ CONFIG += warn_on
 
 SOURCES += weather.cpp
 
-qml.files = weather.qml cover pages
+qml.files = weather.qml cover model pages
 desktop.files = sailfish-weather.desktop
 
 include(sailfishapplication/sailfishapplication.pri)

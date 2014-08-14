@@ -16,7 +16,7 @@ Page {
                 //% "Update"
                 text: qsTrId("weather-me-update")
                 onClicked: reloadTimer.restart()
-                enabled: savedWeathersModel.count > 0
+                enabled: savedWeathersModel.currentWeather || savedWeathersModel.count > 0
                 Timer {
                     id: reloadTimer
                     interval: 500
@@ -33,7 +33,7 @@ Page {
                 Behavior on opacity { FadeAnimation {}}
                 weather: savedWeathersModel.currentWeather
                 onClicked: {
-                    pageStack.push("WeatherPage.qml", {"weather": weather, "weatherModel": weatherModels[weather.locationId] })
+                    pageStack.push("WeatherPage.qml", {"weather": weather, "weatherModel": currentWeatherModel })
                 }
             }
             Item {
@@ -45,16 +45,18 @@ Page {
             parent: weatherListView.contentItem
             y: weatherListView.originY + Theme.itemSizeSmall + Theme.itemSizeLarge*2
             status: savedWeathersModel.currentWeather ? savedWeathersModel.currentWeather.status : Weather.Null
-            text: !savedWeathersModel.currentWeather ?
-                      //% "Add your location to see the weather"
-                      qsTrId("weather-la-add_your_location_to_see_weather")
-                    :
-                      savedWeathersModel.currentWeather.status == Weather.Error ?
-                          //% "Loading failed"
-                          qsTrId("weather-la-loading_failed")
-                        :
-                      //% "Loading"
-                      qsTrId("weather-la-loading")
+            text: {
+                if (gpsTechModel.available && !positioningAllowed) {
+                    //% "Positioning is turned off. See System settings / Location. Pull down to add a weather location."
+                    return qsTrId("weather-la-positioning_is_turned_off_add_your_location")
+                } else if (!savedWeathersModel.currentWeather && savedWeathersModel.currentWeather.status == Weather.Error) {
+                    //% "Loading failed"
+                    return qsTrId("weather-la-loading_failed")
+                } else {
+                    //% "Loading"
+                    return qsTrId("weather-la-loading")
+                }
+            }
             onReload: {
                 if (savedWeathersModel.currentWeather) {
                     weatherApplication.reload(savedWeathersModel.currentWeather.locationId)
@@ -154,8 +156,24 @@ Page {
                     MenuItem {
                         //% "Set as current"
                         text: qsTrId("weather-me-set_as_current")
-                        visible: model.status == Weather.Ready
-                        onClicked: savedWeathersModel.currentLocationId = model.locationId
+                        visible: !currentLocationReady && model.status == Weather.Ready
+                        onClicked: {
+                            var current = savedWeathersModel.currentWeather
+                            if (!current || current.locationId !== model.locationId) {
+                                savedWeathersModel.setCurrentWeather({
+                                                                          "locationId": model.locationId,
+                                                                          "city": model.city,
+                                                                          "state": model.state,
+                                                                          "country": model.country,
+                                                                          "temperature": model.temperature,
+                                                                          "temperatureFeel": model.temperatureFeel,
+                                                                          "weatherType": model.weatherType,
+                                                                          "description": model.description,
+                                                                          "timestamp": model.timestamp
+                                                                      })
+
+                            }
+                        }
                     }
                     MenuItem {
                         //% "Move to top"

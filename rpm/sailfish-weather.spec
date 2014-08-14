@@ -18,6 +18,8 @@ BuildRequires:  qt5-qttools-linguist
 Requires:  sailfishsilica-qt5
 Requires:  sailfish-components-weather-qt5
 Requires:  mapplauncherd-booster-silica-qt5
+Requires:  connman-qt5-declarative
+Requires:  jolla-settings-system
 
 %description
 Sailfish-style Weather application

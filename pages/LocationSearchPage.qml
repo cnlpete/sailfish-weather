@@ -69,13 +69,19 @@ Page {
             height: Theme.itemSizeMedium
             onClicked: {
                 savedWeathersModel.addLocation({
-                                            "locationId": model.locationId,
-                                            "city": model.city,
-                                            "state": model.state,
-                                            "country": model.country
-                                        })
-                if (savedWeathersModel.count == 1) {
-                    savedWeathersModel.currentLocationId = model.locationId
+                                                   "locationId": model.locationId,
+                                                   "city": model.city,
+                                                   "state": model.state,
+                                                   "country": model.country
+                                               })
+
+                if (!savedWeathersModel.currentWeather) {
+                    savedWeathersModel.setCurrentWeather({
+                                                              "locationId": model.locationId,
+                                                              "city": model.city,
+                                                              "state": model.state,
+                                                              "country": model.country
+                                                          })
                 }
 
                 pageStack.pop()
@@ -99,7 +105,7 @@ Page {
                 Label {
                     width: parent.width
                     textFormat: Text.StyledText
-                    text: Theme.highlightText((model.state.length > "" ? model.state + ", " : "") + model.country, locationsModel.filter, Theme.highlightColor)
+                    text: Theme.highlightText((model.state && model.state.length > 0 ? model.state + ", " : "") + model.country, locationsModel.filter, Theme.highlightColor)
                     color: highlighted ? Theme.secondaryHighlightColor : Theme.secondaryColor
                     font.pixelSize: Theme.fontSizeSmall
                     truncationMode: TruncationMode.Fade
