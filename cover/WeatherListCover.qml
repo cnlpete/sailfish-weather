@@ -12,17 +12,24 @@ Item {
     PathView {
         id: view
 
+        property int rollIndex
+        property real rollOffset
+
         x: Theme.paddingLarge
         model: savedWeathersModel
         width: parent.width - 2*x
         pathItemCount: count > 4 ? 5 : Math.min(visibleItemCount, count)
         height: Math.min(visibleItemCount, count)/visibleItemCount*maximumHeight
+        offset: rollIndex + rollOffset
         delegate: Column {
-            width: view.width
 
+            property bool aboutToSlideIn: view.rollOffset === 0 && model.index === (view.count - view.rollIndex) % view.count
+
+            width: view.width
+            visible: view.count <= 4 || !aboutToSlideIn
             Item {
                 width: parent.width
-                height: Theme.paddingLarge + Theme.paddingSmall
+                height: Theme.paddingLarge + Theme.paddingMedium
             }
             Label {
                 width: parent.width
@@ -48,12 +55,26 @@ Item {
             property: "offset"
             value: 0
         }
-        NumberAnimation on offset {
+        SequentialAnimation on rollOffset {
+            id: rollAnimation
             running: cover.status === Cover.Active && view.visible && view.count > 4
             loops: Animation.Infinite
-            from: 0.0
-            to: view.count
-            duration: 3000*view.count
+            NumberAnimation {
+                from: 0
+                to: 1
+                duration: 1000
+                easing.type: Easing.InOutQuad
+            }
+            ScriptAction {
+                script: {
+                    view.rollIndex = view.rollIndex + 1
+                    view.rollOffset = 0
+                    if (view.rollIndex >= view.count) {
+                        view.rollIndex = 0
+                    }
+                }
+            }
+            PauseAnimation { duration: 3000 }
         }
     }
     OpacityRampEffect {
