@@ -136,6 +136,16 @@ Page {
             Component {
                 id: contextMenuComponent
                 ContextMenu {
+                    property bool moveItemsWhenClosed
+                    property bool menuOpen: height > 0
+
+                    onMenuOpenChanged: {
+                        if (!menuOpen && moveItemsWhenClosed) {
+                            savedWeathersModel.moveToTop(model.index)
+                            moveItemsWhenClosed = false
+                        }
+                    }
+
                     MenuItem {
                         //% "Remove"
                         text: qsTrId("weather-me-remove")
@@ -146,6 +156,12 @@ Page {
                         text: qsTrId("weather-me-set_as_current")
                         visible: model.status == Weather.Ready
                         onClicked: savedWeathersModel.currentLocationId = model.locationId
+                    }
+                    MenuItem {
+                        //% "Move to top"
+                        text: qsTrId("weather-me-move_to_top")
+                        visible: model.index !== 0
+                        onClicked: moveItemsWhenClosed = true
                     }
                 }
             }
