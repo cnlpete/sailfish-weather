@@ -41,7 +41,7 @@ Page {
         ViewPlaceholder {
             id: placeHolder
             //% "Loading failed"
-            text: error ? qsTrId("weather-la-loading_failed")
+            text: error && locationsModel.filter.length >= 3 ? qsTrId("weather-la-loading_failed")
                           //: Placeholder displayed when user hasn't yet typed a search string
                           //% "Search and select new location or save the current one"
                         : qsTrId("weather-la-search-or-select-location")
@@ -55,8 +55,21 @@ Page {
                 text: error ? qsTrId("weather-la-try_again")
                               //% "Save current"
                             : qsTrId("weather-bt-save_current")
-                enabled: error // Enable once GPS exists
-                onClicked: locationsModel.reload()
+                visible: error || (currentLocationReady && savedWeathersModel.currentWeather)
+                onClicked: {
+                    if (error) {
+                        locationsModel.reload()
+                    } else {
+                        var weather = savedWeathersModel.currentWeather
+                        savedWeathersModel.addLocation({
+                                                           "locationId": weather.locationId,
+                                                           "city": weather.city,
+                                                           "state": weather.state,
+                                                           "country": weather.country
+                                                       })
+                        pageStack.pop()
+                    }
+                }
                 anchors {
                     top: parent.bottom
                     topMargin: Theme.paddingMedium
