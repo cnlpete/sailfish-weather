@@ -8,7 +8,7 @@ Page {
     ConfigurationValue {
         id: temperatureUnitValue
         key: "/sailfish/weather/temperature_unit"
-        defaultValue: "BasedOnLocale"
+        defaultValue: "BasedOnLocation"
     }
     SilicaFlickable {
         anchors.fill: parent
@@ -25,10 +25,12 @@ Page {
             ComboBox {
                 //% "Temperature units"
                 label: qsTrId("weather_settings-la-temperature_units")
+                //% "Follow location setting requires positioning and network connectivity to determine which temperature unit to use."
+                description: qsTrId("weather_settings-la-requires_positioning_and_network")
 
                 Component.onCompleted: {
                     switch (temperatureUnitValue.value) {
-                    case "BasedOnLocale":
+                    case "BasedOnLocation":
                         currentIndex = 0
                         break
                     case "Celsius":
@@ -46,9 +48,9 @@ Page {
 
                 menu: ContextMenu {
                     MenuItem {
-                        //% "Follow country"
-                        text: qsTrId("weather_settings-me-follow_country")
-                        onClicked: temperatureUnitValue.value = "BasedOnLocale"
+                        //% "Follow location"
+                        text: qsTrId("weather_settings-me-follow_location")
+                        onClicked: temperatureUnitValue.value = "BasedOnLocation"
                     }
                     MenuItem {
                         //% "Celsius"

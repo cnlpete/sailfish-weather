@@ -45,7 +45,7 @@ Page {
             y: weatherListView.originY + Theme.itemSizeSmall + (savedWeathersModel.count > 0 ? 0 : Theme.itemSizeLarge*2)
             status: savedWeathersModel.currentWeather ? savedWeathersModel.currentWeather.status : Weather.Null
             text: {
-                if (gpsTechModel.available && !positioningAllowed) {
+                if (!LocationDetection.positioningAllowed) {
                     //% "Positioning is turned off. See System settings / Location. Pull down to add a weather location."
                     return qsTrId("weather-la-positioning_is_turned_off_add_your_location")
                 } else if (!savedWeathersModel.currentWeather && savedWeathersModel.currentWeather.status == Weather.Error) {
@@ -155,7 +155,7 @@ Page {
                     MenuItem {
                         //% "Set as current"
                         text: qsTrId("weather-me-set_as_current")
-                        visible: !currentLocationReady && model.status == Weather.Ready
+                        visible: !LocationDetection.ready && model.status == Weather.Ready
                         onClicked: {
                             var current = savedWeathersModel.currentWeather
                             if (!current || current.locationId !== model.locationId) {

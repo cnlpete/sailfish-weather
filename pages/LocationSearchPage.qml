@@ -50,7 +50,7 @@ Page {
                         //% "Sorry, we couldn't find anything"
                         return qsTrId("weather-la-could_not_find_anything")
                     }
-                } else if (currentLocationReady && savedWeathersModel.currentWeather) {
+                } else if (LocationDetection.ready && savedWeathersModel.currentWeather) {
                     //: Placeholder displayed when user hasn't yet typed a search string
                     //% "Search and select new location or save the current one"
                     return qsTrId("weather-la-search_or_save_location")
@@ -70,7 +70,7 @@ Page {
                 text: error ? qsTrId("weather-la-try_again")
                               //% "Save current"
                             : qsTrId("weather-bt-save_current")
-                visible: error || (currentLocationReady && savedWeathersModel.currentWeather)
+                visible: error || (LocationDetection.ready && savedWeathersModel.currentWeather)
                 onClicked: {
                     if (error) {
                         locationsModel.reload()
