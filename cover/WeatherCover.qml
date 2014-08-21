@@ -14,6 +14,7 @@ CoverBackground {
 
     CoverPlaceholder {
         visible: !ready
+        icon.source: "image://theme/graphic-foreca"
         text: !loaded ? //% "Select location to check weather"
                         qsTrId("weather-la-select_location_to_check_weather")
                       : error ? //% "Unable to connect, try again"
