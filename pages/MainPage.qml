@@ -189,6 +189,7 @@ Page {
             ProviderDisclaimer {
                 id: disclaimer
                 y: Math.max(0, Screen.height - weatherListView.contentHeight)
+                weather: savedWeathersModel.currentWeather
             }
         }
         VerticalScrollDecorator {}
