@@ -5,6 +5,7 @@ import QtQuick.XmlListModel 2.0
 
 Page {
     property bool error: locationsModel.status === XmlListModel.Error
+    property bool loading: locationsModel.status === XmlListModel.Loading
     LocationsModel { id: locationsModel }
     SilicaListView {
         id: locationListView
@@ -40,12 +41,26 @@ Page {
 
         ViewPlaceholder {
             id: placeHolder
-            //% "Loading failed"
-            text: error && locationsModel.filter.length >= 3 ? qsTrId("weather-la-loading_failed")
-                          //: Placeholder displayed when user hasn't yet typed a search string
-                          //% "Search and select new location or save the current one"
-                        : qsTrId("weather-la-search-or-select-location")
-            enabled: error || locationListView.count == 0 && locationsModel.filter.length < 3
+            text: {
+                if (error) {
+                    //% "Loading failed"
+                    return qsTrId("weather-la-loading_failed")
+                } else if (locationsModel.filter.length >= 3 && !loading) {
+                     if (!loading) {
+                        //% "Sorry, we couldn't find anything"
+                        return qsTrId("weather-la-could_not_find_anything")
+                    }
+                } else if (currentLocationReady && savedWeathersModel.currentWeather) {
+                    //: Placeholder displayed when user hasn't yet typed a search string
+                    //% "Search and select new location or save the current one"
+                    return qsTrId("weather-la-search_or_save_location")
+                } else {
+                    //: Placeholder displayed when user hasn't yet typed a search string
+                    //% "Search and select new location"
+                    return qsTrId("weather-la-search_and_select_location")
+                }
+            }
+            enabled: error || (locationListView.count == 0 && !loading) || locationsModel.filter.length < 3
 
             // TODO: add offset property to ViewPlaceholder
             y: locationListView.originY + Theme.paddingLarge

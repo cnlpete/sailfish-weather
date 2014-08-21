@@ -30,10 +30,9 @@ Page {
             spacing: Theme.paddingLarge
             WeatherItem {
                 opacity: currentWeatherAvailable ? 1.0 : 0.0
-                Behavior on opacity { FadeAnimation {}}
                 weather: savedWeathersModel.currentWeather
                 onClicked: {
-                    pageStack.push("WeatherPage.qml", {"weather": weather, "weatherModel": currentWeatherModel })
+                    pageStack.push("WeatherPage.qml", {"weather": weather, "weatherModel": currentWeatherModel, "current": true })
                 }
             }
             Item {
@@ -43,7 +42,7 @@ Page {
         }
         PlaceholderItem {
             parent: weatherListView.contentItem
-            y: weatherListView.originY + Theme.itemSizeSmall + Theme.itemSizeLarge*2
+            y: weatherListView.originY + Theme.itemSizeSmall + (savedWeathersModel.count > 0 ? 0 : Theme.itemSizeLarge*2)
             status: savedWeathersModel.currentWeather ? savedWeathersModel.currentWeather.status : Weather.Null
             text: {
                 if (gpsTechModel.available && !positioningAllowed) {
