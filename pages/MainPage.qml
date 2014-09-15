@@ -64,12 +64,12 @@ Page {
         }
         model: savedWeathersModel
         delegate: ListItem {
-            menu: contextMenuComponent
-            contentHeight: Theme.itemSizeMedium
             function remove() {
                 remorseAction("Deleting", function() { savedWeathersModel.remove(locationId) })
             }
             ListView.onRemove: animateRemoval()
+            menu: contextMenuComponent
+            contentHeight: Theme.itemSizeMedium
             onClicked: {
                 if (model.status == Weather.Error) {
                     weatherApplication.reload(model.locationId)

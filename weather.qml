@@ -45,9 +45,9 @@ ApplicationWindow {
     }
     ApplicationWeatherModel {
         id: currentWeatherModel
-        weather: savedWeathersModel.currentWeather
+
         savedWeathers: savedWeathersModel
-        application: weatherApplication
+        weather: savedWeathersModel.currentWeather
     }
     Instantiator {
         onObjectAdded: {
@@ -62,9 +62,8 @@ ApplicationWindow {
 
         model: SavedWeathersModel { id: savedWeathersModel }
         ApplicationWeatherModel {
-            weather: model
             savedWeathers: savedWeathersModel
-            application: weatherApplication
+            weather: model
         }
     }
 }
