@@ -33,12 +33,13 @@ ApplicationWindow {
         onLocationIdChanged: updateLocation()
         function updateLocation() {
             if (LocationDetection.ready && LocationDetection.locationId.length > 0) {
-                savedWeathersModel.setCurrentWeather({
-                                                          "locationId": LocationDetection.locationId,
-                                                          "city": LocationDetection.city,
-                                                          "state": "",
-                                                          "country": ""
-                                                      })
+                var location = {
+                    "locationId": LocationDetection.locationId,
+                    "city": LocationDetection.city,
+                    "state": "",
+                    "country": ""
+                }
+                savedWeathersModel.setCurrentWeather(location)
                 TemperatureConverter.metric = LocationDetection.metric
             }
         }

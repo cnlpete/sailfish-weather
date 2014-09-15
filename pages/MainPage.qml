@@ -159,17 +159,18 @@ Page {
                         onClicked: {
                             var current = savedWeathersModel.currentWeather
                             if (!current || current.locationId !== model.locationId) {
-                                savedWeathersModel.setCurrentWeather({
-                                                                          "locationId": model.locationId,
-                                                                          "city": model.city,
-                                                                          "state": model.state,
-                                                                          "country": model.country,
-                                                                          "temperature": model.temperature,
-                                                                          "temperatureFeel": model.temperatureFeel,
-                                                                          "weatherType": model.weatherType,
-                                                                          "description": model.description,
-                                                                          "timestamp": model.timestamp
-                                                                      })
+                                var weather = {
+                                    "locationId": model.locationId,
+                                    "city": model.city,
+                                    "state": model.state,
+                                    "country": model.country,
+                                    "temperature": model.temperature,
+                                    "temperatureFeel": model.temperatureFeel,
+                                    "weatherType": model.weatherType,
+                                    "description": model.description,
+                                    "timestamp": model.timestamp
+                                }
+                                savedWeathersModel.setCurrentWeather(weather)
 
                             }
                         }

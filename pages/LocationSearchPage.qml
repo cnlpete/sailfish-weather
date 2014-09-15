@@ -96,20 +96,16 @@ Page {
             id: searchResultItem
             height: Theme.itemSizeMedium
             onClicked: {
-                savedWeathersModel.addLocation({
-                                                   "locationId": model.locationId,
-                                                   "city": model.city,
-                                                   "state": model.state,
-                                                   "country": model.country
-                                               })
+                var location = {
+                    "locationId": model.locationId,
+                    "city": model.city,
+                    "state": model.state,
+                    "country": model.country
+                }
+                savedWeathersModel.addLocation(location)
 
                 if (!savedWeathersModel.currentWeather) {
-                    savedWeathersModel.setCurrentWeather({
-                                                              "locationId": model.locationId,
-                                                              "city": model.city,
-                                                              "state": model.state,
-                                                              "country": model.country
-                                                          })
+                    savedWeathersModel.setCurrentWeather(location)
                 }
 
                 pageStack.pop()
