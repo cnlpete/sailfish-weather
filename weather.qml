@@ -19,6 +19,9 @@ ApplicationWindow {
     signal reload(int locationId)
     signal reloadAll()
 
+    // also update location (if enabled) on manual weather update
+    onReloadAll: LocationDetection.update()
+
     Connections {
         target: Qt.application
         onActiveChanged: {
