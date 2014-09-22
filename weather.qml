@@ -43,7 +43,7 @@ ApplicationWindow {
                     "country": ""
                 }
                 savedWeathersModel.setCurrentWeather(location)
-                TemperatureConverter.metric = LocationDetection.metric
+                savedWeathersModel.metric = LocationDetection.metric
             }
         }
     }
@@ -69,5 +69,10 @@ ApplicationWindow {
             savedWeathers: savedWeathersModel
             weather: model
         }
+    }
+    Binding {
+        target: TemperatureConverter
+        property: "metric"
+        value: savedWeathersModel.metric
     }
 }
