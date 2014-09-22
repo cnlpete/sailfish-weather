@@ -9,6 +9,7 @@ ApplicationWindow {
     id: weatherApplication
 
     property var weatherModels
+    property int loadingReferenceCount
     property bool locationReady: LocationDetection.ready
     property bool currentWeatherAvailable: savedWeathersModel.currentWeather
                                         && savedWeathersModel.currentWeather.status == Weather.Ready

@@ -1,6 +1,7 @@
 import QtQuick 2.0
 import Sailfish.Silica 1.0
 import Sailfish.Weather 1.0
+import org.nemomobile.keepalive 1.0
 
 CoverBackground {
     id: cover
@@ -34,6 +35,32 @@ CoverBackground {
         source: "WeatherListCover.qml"
         Behavior on opacity { FadeAnimation {} }
         anchors.fill: parent
+    }
+
+    BackgroundJob {
+        id: backgroundJob
+        enabled: ready
+        frequency: BackgroundJob.OneHour
+        onTriggered: {
+            // update the weather info on the cover every one hour
+            if (current) {
+                if (savedWeathersModel.currentWeather) {
+                    currentWeatherModel.reload()
+                }
+            } else if (savedWeathersModel.count > 1) {
+                weatherApplication.reloadAll()
+            }
+        }
+    }
+    Connections {
+        target: weatherApplication
+        onLoadingReferenceCountChanged: {
+            if (loadingReferenceCount === 0) {
+                if (backgroundJob.running) {
+                    backgroundJob.finished()
+                }
+            }
+        }
     }
 
     CoverActionList {

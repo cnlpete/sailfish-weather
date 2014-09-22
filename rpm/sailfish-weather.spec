@@ -20,6 +20,7 @@ Requires:  sailfish-components-weather-qt5
 Requires:  mapplauncherd-booster-silica-qt5
 Requires:  connman-qt5-declarative
 Requires:  jolla-settings-system
+Requires:  libkeepalive
 
 %description
 Sailfish-style Weather application
