@@ -43,12 +43,14 @@ Page {
         PlaceholderItem {
             parent: weatherListView.contentItem
             y: weatherListView.originY + Theme.itemSizeSmall + (savedWeathersModel.count > 0 ? 0 : Theme.itemSizeLarge*2)
-            status: savedWeathersModel.currentWeather ? savedWeathersModel.currentWeather.status : Weather.Null
+            enabled: !savedWeathersModel.currentWeather || !savedWeathersModel.currentWeather.populated
+            error: !LocationDetection.positioningAllowed || showButton
+            showButton: LocationDetection.error || savedWeathersModel.currentWeather && savedWeathersModel.currentWeather.status === Weather.Error
             text: {
                 if (!LocationDetection.positioningAllowed) {
                     //% "Positioning is turned off. See System settings / Location. Pull down to add a weather location."
                     return qsTrId("weather-la-positioning_is_turned_off_add_your_location")
-                } else if (!savedWeathersModel.currentWeather && savedWeathersModel.currentWeather.status == Weather.Error) {
+                } else if (error) {
                     //% "Loading failed"
                     return qsTrId("weather-la-loading_failed")
                 } else {
@@ -57,7 +59,9 @@ Page {
                 }
             }
             onReload: {
-                if (savedWeathersModel.currentWeather) {
+                if (LocationDetection.error) {
+                    LocationDetection.reloadModel()
+                } else if (savedWeathersModel.currentWeather) {
                     weatherApplication.reload(savedWeathersModel.currentWeather.locationId)
                 }
             }
@@ -71,7 +75,7 @@ Page {
             menu: contextMenuComponent
             contentHeight: Theme.itemSizeMedium
             onClicked: {
-                if (model.status == Weather.Error) {
+                if (!model.populated && model.status == Weather.Error) {
                     weatherApplication.reload(model.locationId)
                 } else {
                     pageStack.push("WeatherPage.qml", {"weather": savedWeathersModel.get(model.locationId),
@@ -112,7 +116,7 @@ Page {
                 Label {
                     width: parent.width
                     color: highlighted ? Theme.secondaryHighlightColor : Theme.secondaryColor
-                    text: model.status === Weather.Error ?
+                    text: !model.populated && model.status === Weather.Error ?
                               //% "Loading failed. Tap to reload"
                               qsTrId("weather-la-loading_failed_tap_to_reload")
                             :
@@ -132,7 +136,7 @@ Page {
                     rightMargin: Theme.paddingLarge
                 }
                 width: visible ? implicitWidth : 0
-                visible: model.status == Weather.Ready
+                visible: model.populated
             }
             Component {
                 id: contextMenuComponent
