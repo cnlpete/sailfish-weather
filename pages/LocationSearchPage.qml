@@ -4,6 +4,8 @@ import Sailfish.Weather 1.0
 import QtQuick.XmlListModel 2.0
 
 Page {
+    id: page
+
     property bool error: locationsModel.status === XmlListModel.Error
     property bool loading: locationsModel.status === XmlListModel.Loading
     LocationsModel { id: locationsModel }
@@ -22,7 +24,7 @@ Page {
                 id: searchField
                 //% "Search locations"
                 placeholderText: qsTrId("weather-la-search_locations")
-                focus: locationListView.atYBeginning
+                focus: page.status == PageStatus.Active && locationListView.atYBeginning
                 width: parent.width
                 Binding {
                     target: locationsModel
