@@ -1,7 +1,6 @@
 import QtQuick 2.0
 import Sailfish.Silica 1.0
 import Sailfish.Weather 1.0
-import org.nemomobile.keepalive 1.0
 
 CoverBackground {
     id: cover
@@ -37,28 +36,14 @@ CoverBackground {
         anchors.fill: parent
     }
 
-    BackgroundJob {
-        id: backgroundJob
-        enabled: ready
-        frequency: BackgroundJob.OneHour
-        onTriggered: {
-            // update the weather info on the cover every one hour
+    onStatusChanged: {
+        if (status == Cover.Active) {
             if (current) {
                 if (savedWeathersModel.currentWeather) {
                     currentWeatherModel.reload()
                 }
             } else if (savedWeathersModel.count > 1) {
                 weatherApplication.reloadAll()
-            }
-        }
-    }
-    Connections {
-        target: weatherApplication
-        onLoadingReferenceCountChanged: {
-            if (loadingReferenceCount === 0) {
-                if (backgroundJob.running) {
-                    backgroundJob.finished()
-                }
             }
         }
     }
