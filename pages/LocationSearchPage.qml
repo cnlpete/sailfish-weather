@@ -25,7 +25,7 @@ Page {
 
                 //% "Search locations"
                 placeholderText: qsTrId("weather-la-search_locations")
-                focus: page.status == PageStatus.Active && locationListView.atYBeginning
+                focus: page.status == PageStatus.Active
                 onFocusChanged: if (focus) forceActiveFocus()
                 width: parent.width
                 Binding {
@@ -96,8 +96,8 @@ Page {
 
                 pageStack.pop()
             }
-            ListView.onAdd: AddAnimation { target: searchResultItem }
-            ListView.onRemove: RemoveAnimation { target: searchResultItem }
+            ListView.onAdd: AddAnimation { target: searchResultItem; from: 0; to: 1 }
+            ListView.onRemove: FadeAnimation { target: searchResultItem; from: 1; to: 0 }
             Column {
                 anchors {
                     left: parent.left
