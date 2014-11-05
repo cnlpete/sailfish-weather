@@ -22,16 +22,17 @@ Page {
             }
             SearchField {
                 id: searchField
+
                 //% "Search locations"
                 placeholderText: qsTrId("weather-la-search_locations")
                 focus: page.status == PageStatus.Active && locationListView.atYBeginning
+                onFocusChanged: if (focus) forceActiveFocus()
                 width: parent.width
                 Binding {
                     target: locationsModel
                     property: "filter"
                     value: searchField.text.toLowerCase().trim()
                 }
-                Component.onCompleted: searchField.forceActiveFocus()
             }
         }
         BusyIndicator {
@@ -52,10 +53,6 @@ Page {
                         //% "Sorry, we couldn't find anything"
                         return qsTrId("weather-la-could_not_find_anything")
                     }
-                } else if (LocationDetection.ready && savedWeathersModel.currentWeather) {
-                    //: Placeholder displayed when user hasn't yet typed a search string
-                    //% "Search and select new location or save the current one"
-                    return qsTrId("weather-la-search_or_save_location")
                 } else {
                     //: Placeholder displayed when user hasn't yet typed a search string
                     //% "Search and select new location"
@@ -65,28 +62,15 @@ Page {
             enabled: error || (locationListView.count == 0 && !loading) || locationsModel.filter.length < 3
 
             // TODO: add offset property to ViewPlaceholder
-            y: locationListView.originY + Theme.paddingLarge
+            y: locationListView.originY + Theme.itemSizeExtraSmall
                + (locationListView.headerItem ? locationListView.headerItem.height : 0)
             Button {
                 //% "Try again"
                 text: error ? qsTrId("weather-la-try_again")
                               //% "Save current"
                             : qsTrId("weather-bt-save_current")
-                visible: error || (LocationDetection.ready && savedWeathersModel.currentWeather)
-                onClicked: {
-                    if (error) {
-                        locationsModel.reload()
-                    } else {
-                        var weather = savedWeathersModel.currentWeather
-                        savedWeathersModel.addLocation({
-                                                           "locationId": weather.locationId,
-                                                           "city": weather.city,
-                                                           "state": weather.state,
-                                                           "country": weather.country
-                                                       })
-                        pageStack.pop()
-                    }
-                }
+                visible: error
+                onClicked: locationsModel.reload()
                 anchors {
                     top: parent.bottom
                     topMargin: Theme.paddingMedium

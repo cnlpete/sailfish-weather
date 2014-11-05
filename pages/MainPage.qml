@@ -5,7 +5,6 @@ import Sailfish.Weather 1.0
 Page {
     SilicaListView {
         id: weatherListView
-
         PullDownMenu {
             MenuItem {
                 //% "New location"
@@ -44,12 +43,12 @@ Page {
             parent: weatherListView.contentItem
             y: weatherListView.originY + Theme.itemSizeSmall + (savedWeathersModel.count > 0 ? 0 : Theme.itemSizeLarge*2)
             enabled: !savedWeathersModel.currentWeather || !savedWeathersModel.currentWeather.populated
-            error: !LocationDetection.positioningAllowed || showButton
-            showButton: LocationDetection.error || savedWeathersModel.currentWeather && savedWeathersModel.currentWeather.status === Weather.Error
+            error: savedWeathersModel.currentWeather && savedWeathersModel.currentWeather.status === Weather.Error
+            empty: !savedWeathersModel.currentWeather
             text: {
-                if (!LocationDetection.positioningAllowed) {
-                    //% "Positioning is turned off. See System settings / Location. Pull down to add a weather location."
-                    return qsTrId("weather-la-positioning_is_turned_off_add_your_location")
+                if (empty) {
+                    //% "Pull down to add a weather location."
+                    return qsTrId("weather-la-pull_down_to_add_your_location")
                 } else if (error) {
                     //% "Loading failed"
                     return qsTrId("weather-la-loading_failed")
@@ -58,13 +57,7 @@ Page {
                     return qsTrId("weather-la-loading")
                 }
             }
-            onReload: {
-                if (LocationDetection.error) {
-                    LocationDetection.reloadModel()
-                } else if (savedWeathersModel.currentWeather) {
-                    weatherApplication.reload(savedWeathersModel.currentWeather.locationId)
-                }
-            }
+            onReload: weatherApplication.reload(savedWeathersModel.currentWeather.locationId)
         }
         model: savedWeathersModel
         delegate: ListItem {
@@ -159,7 +152,7 @@ Page {
                     MenuItem {
                         //% "Set as current"
                         text: qsTrId("weather-me-set_as_current")
-                        visible: !LocationDetection.ready && model.status == Weather.Ready
+                        visible: model.status !== Weather.Error
                         onClicked: {
                             var current = savedWeathersModel.currentWeather
                             if (!current || current.locationId !== model.locationId) {

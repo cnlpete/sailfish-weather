@@ -8,7 +8,7 @@ Page {
     ConfigurationValue {
         id: temperatureUnitValue
         key: "/sailfish/weather/temperature_unit"
-        defaultValue: "BasedOnLocation"
+        defaultValue: "Celsius"
     }
     SilicaFlickable {
         anchors.fill: parent
@@ -30,14 +30,11 @@ Page {
 
                 Component.onCompleted: {
                     switch (temperatureUnitValue.value) {
-                    case "BasedOnLocation":
+                    case "Celsius":
                         currentIndex = 0
                         break
-                    case "Celsius":
-                        currentIndex = 1
-                        break
                     case "Fahrenheit":
-                        currentIndex = 2
+                        currentIndex = 1
                         break
                     default:
                         console.log("WeatherSettings: Invalid temperature unit value", temperatureUnitValue.value)
@@ -47,11 +44,6 @@ Page {
                 currentIndex: weatherSettings.distanceUnits
 
                 menu: ContextMenu {
-                    MenuItem {
-                        //% "Follow location"
-                        text: qsTrId("weather_settings-me-follow_location")
-                        onClicked: temperatureUnitValue.value = "BasedOnLocation"
-                    }
                     MenuItem {
                         //% "Celsius"
                         text: qsTrId("weather_settings-me-celsius")

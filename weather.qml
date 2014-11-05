@@ -9,10 +9,8 @@ ApplicationWindow {
     id: weatherApplication
 
     property var weatherModels
-    property int loadingReferenceCount
-    property bool locationReady: LocationDetection.ready
     property bool currentWeatherAvailable: savedWeathersModel.currentWeather
-                                        && savedWeathersModel.currentWeather.status == Weather.Ready
+                                        && savedWeathersModel.currentWeather.populated
 
     initialPage: Component { MainPage {} }
     cover: Component { WeatherCover {} }
@@ -20,31 +18,11 @@ ApplicationWindow {
     signal reload(int locationId)
     signal reloadAll()
 
-    // also update location (if enabled) on manual weather update
-    onReloadAll: LocationDetection.updateLocation()
-
     Connections {
         target: Qt.application
         onActiveChanged: {
             if (!Qt.application.active) {
                 savedWeathersModel.save()
-            }
-        }
-    }
-    Connections {
-        target: LocationDetection
-        onReadyChanged: updateLocation()
-        onLocationIdChanged: updateLocation()
-        function updateLocation() {
-            if (LocationDetection.ready && LocationDetection.locationId.length > 0) {
-                var location = {
-                    "locationId": LocationDetection.locationId,
-                    "city": LocationDetection.city,
-                    "state": "",
-                    "country": ""
-                }
-                savedWeathersModel.setCurrentWeather(location)
-                savedWeathersModel.metric = LocationDetection.metric
             }
         }
     }
