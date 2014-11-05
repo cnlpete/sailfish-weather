@@ -17,6 +17,7 @@ ApplicationWindow {
 
     signal reload(int locationId)
     signal reloadAll()
+    signal reloadAllIfAllowed()
 
     Connections {
         target: Qt.application

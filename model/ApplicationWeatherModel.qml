@@ -14,5 +14,6 @@ WeatherModel {
             }
         }
         onReloadAll: model.reload()
+        onReloadAllIfAllowed: if (model.updateAllowed()) model.reload()
     }
 }

@@ -39,11 +39,11 @@ CoverBackground {
     onStatusChanged: {
         if (status == Cover.Active) {
             if (current) {
-                if (savedWeathersModel.currentWeather) {
+                if (savedWeathersModel.currentWeather && currentWeatherModel.updateAllowed()) {
                     currentWeatherModel.reload()
                 }
             } else if (savedWeathersModel.count > 1) {
-                weatherApplication.reloadAll()
+                weatherApplication.reloadAllIfAllowed()
             }
         }
     }
