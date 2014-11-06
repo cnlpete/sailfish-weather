@@ -8,7 +8,7 @@ Page {
     ConfigurationValue {
         id: temperatureUnitValue
         key: "/sailfish/weather/temperature_unit"
-        defaultValue: "Celsius"
+        defaultValue: "celsius"
     }
     SilicaFlickable {
         anchors.fill: parent
@@ -25,16 +25,13 @@ Page {
             ComboBox {
                 //% "Temperature units"
                 label: qsTrId("weather_settings-la-temperature_units")
-                //% "Follow location setting requires positioning and network connectivity to determine which temperature unit to use."
-                description: qsTrId("weather_settings-la-requires_positioning_and_network")
-
                 Component.onCompleted: {
                     switch (temperatureUnitValue.value) {
-                    case "Celsius":
+                    case "celsius":
                         currentIndex = 0
                         break
-                    case "Fahrenheit":
-                        currentIndex = 1
+                    case "fahrenheit":
+                        currentIndex = 1    
                         break
                     default:
                         console.log("WeatherSettings: Invalid temperature unit value", temperatureUnitValue.value)
@@ -47,12 +44,12 @@ Page {
                     MenuItem {
                         //% "Celsius"
                         text: qsTrId("weather_settings-me-celsius")
-                        onClicked: temperatureUnitValue.value = "Celsius"
+                        onClicked: temperatureUnitValue.value = "celsius"
                     }
                     MenuItem {
                         //% "Fahrenheit"
                         text: qsTrId("weather_settings-me-fahrenheit")
-                        onClicked: temperatureUnitValue.value = "Fahrenheit"
+                        onClicked: temperatureUnitValue.value = "fahrenheit"
                     }
                 }
             }

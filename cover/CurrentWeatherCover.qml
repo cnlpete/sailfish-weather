@@ -12,7 +12,7 @@ Item {
         width: parent.width
         sourceSize.width: width
         sourceSize.height: width
-        weatherType: weather && weather.weatherType.length > 0 ? weather.weatherType : ""
+        weatherType: weather ? weather.weatherType : ""
         anchors.horizontalCenter: parent.horizontalCenter
     }
     Image {
@@ -28,7 +28,7 @@ Item {
     Label {
         id: temperatureLabel
         font.pixelSize: Theme.fontSizeHuge
-        text: weather ? TemperatureConverter.format(weather.temperature) + "\u00B0" : ""
+        text: weather ? TemperatureConverter.format(weather.temperature) : ""
         anchors.centerIn: weatherImage
     }
     Label {
