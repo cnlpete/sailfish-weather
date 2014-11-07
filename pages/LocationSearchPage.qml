@@ -25,7 +25,7 @@ Page {
 
                 //% "Search locations"
                 placeholderText: qsTrId("weather-la-search_locations")
-                focus: page.status == PageStatus.Active
+                focus: page.status == PageStatus.Active && locationListView.atYBeginning
                 onFocusChanged: if (focus) forceActiveFocus()
                 width: parent.width
                 Binding {
