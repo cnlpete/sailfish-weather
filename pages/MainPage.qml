@@ -27,7 +27,7 @@ Page {
         header: Column {
             width: parent.width
             spacing: Theme.paddingLarge
-            WeatherItem {
+            WeatherHeader {
                 opacity: currentWeatherAvailable ? 1.0 : 0.0
                 weather: savedWeathersModel.currentWeather
                 onClicked: {
