@@ -47,7 +47,10 @@ Page {
             error: savedWeathersModel.currentWeather && savedWeathersModel.currentWeather.status === Weather.Error
             empty: !savedWeathersModel.currentWeather || savedWeathersModel.count == 0
             text: {
-                if (empty) {
+                if (error) {
+                    //% "Loading failed"
+                    return qsTrId("weather-la-loading_failed")
+                } else if (empty) {
                     if (currentWeatherAvailable) {
                         //% "Pull down to add another weather location"
                         return qsTrId("weather-la-pull_down_to_add_another_location")
@@ -55,9 +58,6 @@ Page {
                         //% "Pull down to select your location"
                         return qsTrId("weather-la-pull_down_to_select_your_location")
                     }
-                } else if (error) {
-                    //% "Loading failed"
-                    return qsTrId("weather-la-loading_failed")
                 } else {
                     //% "Loading"
                     return qsTrId("weather-la-loading")

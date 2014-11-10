@@ -88,7 +88,8 @@ Page {
                     "state": model.state,
                     "country": model.country
                 }
-                if (!savedWeathersModel.currentWeather) {
+                if (!savedWeathersModel.currentWeather
+                        || savedWeathersModel.currentWeather.status === Weather.Error) {
                     savedWeathersModel.setCurrentWeather(location)
                 } else {
                     savedWeathersModel.addLocation(location)
