@@ -77,12 +77,8 @@ Page {
             menu: contextMenuComponent
             contentHeight: Theme.itemSizeMedium
             onClicked: {
-                if (!model.populated && model.status == Weather.Error) {
-                    weatherApplication.reload(model.locationId)
-                } else {
-                    pageStack.push("WeatherPage.qml", {"weather": savedWeathersModel.get(model.locationId),
-                                       "weatherModel": weatherModels[model.locationId] })
-                }
+                pageStack.push("WeatherPage.qml", {"weather": savedWeathersModel.get(model.locationId),
+                                   "weatherModel": weatherModels[model.locationId] })
             }
 
             Image {
@@ -119,11 +115,11 @@ Page {
                     width: parent.width
                     color: highlighted ? Theme.secondaryHighlightColor : Theme.secondaryColor
                     text: !model.populated && model.status === Weather.Error ?
-                              //% "Loading failed. Tap to reload"
-                              qsTrId("weather-la-loading_failed_tap_to_reload")
+                              //% "Loading current conditions failed."
+                              qsTrId("weather-la-loading_current_conditions_failed")
                             :
                               model.description
-                    truncationMode: model.status === Weather.Error ? TruncationMode.None : TruncationMode.Fade
+                    truncationMode: TruncationMode.Fade
                     font.pixelSize: Theme.fontSizeSmall
                 }
             }
