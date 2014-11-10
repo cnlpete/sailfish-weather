@@ -40,6 +40,7 @@ Page {
             }
         }
         PlaceholderItem {
+            flickable: weatherListView
             parent: weatherListView.contentItem
             y: weatherListView.originY + Theme.itemSizeSmall + (currentWeatherAvailable ? weatherListView.headerItem.height : 2*Theme.itemSizeLarge)
             enabled: !currentWeatherAvailable || savedWeathersModel.count === 0
