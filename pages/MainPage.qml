@@ -41,14 +41,19 @@ Page {
         }
         PlaceholderItem {
             parent: weatherListView.contentItem
-            y: weatherListView.originY + Theme.itemSizeSmall + (savedWeathersModel.count > 0 ? 0 : Theme.itemSizeLarge*2)
-            enabled: !savedWeathersModel.currentWeather || !savedWeathersModel.currentWeather.populated
+            y: weatherListView.originY + Theme.itemSizeSmall + (currentWeatherAvailable ? weatherListView.headerItem.height : 2*Theme.itemSizeLarge)
+            enabled: !currentWeatherAvailable || savedWeathersModel.count === 0
             error: savedWeathersModel.currentWeather && savedWeathersModel.currentWeather.status === Weather.Error
-            empty: !savedWeathersModel.currentWeather
+            empty: !savedWeathersModel.currentWeather || savedWeathersModel.count == 0
             text: {
                 if (empty) {
-                    //% "Pull down to add a weather location."
-                    return qsTrId("weather-la-pull_down_to_add_your_location")
+                    if (currentWeatherAvailable) {
+                        //% "Pull down to add another weather location"
+                        return qsTrId("weather-la-pull_down_to_add_another_location")
+                    } else {
+                        //% "Pull down to select your location"
+                        return qsTrId("weather-la-pull_down_to_select_your_location")
+                    }
                 } else if (error) {
                     //% "Loading failed"
                     return qsTrId("weather-la-loading_failed")
