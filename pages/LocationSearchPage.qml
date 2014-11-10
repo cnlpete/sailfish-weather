@@ -53,7 +53,7 @@ Page {
                 if (error) {
                     //% "Loading failed"
                     return qsTrId("weather-la-loading_failed")
-                } else if (locationsModel.filter.length > 0 && !loading  && locationListView.count == 0) {
+                } else if (locationsModel.filter.length > 0 && !loading && locationListView.count == 0) {
                     //% "Sorry, we couldn't find anything"
                     return qsTrId("weather-la-could_not_find_anything")
                 } else if (locationsModel.filter.length === 0) {

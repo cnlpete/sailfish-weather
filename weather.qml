@@ -35,11 +35,7 @@ ApplicationWindow {
     }
     Instantiator {
         onObjectAdded: {
-            if (weatherModels) {
-                var models = weatherModels
-            } else {
-                var models = {}
-            }
+            var models = weatherModels ? weatherModels : {}
             models[object.locationId] = object
             weatherModels = models
         }
@@ -49,10 +45,5 @@ ApplicationWindow {
             savedWeathers: savedWeathersModel
             weather: model
         }
-    }
-    Binding {
-        target: TemperatureConverter
-        property: "metric"
-        value: savedWeathersModel.metric
     }
 }
