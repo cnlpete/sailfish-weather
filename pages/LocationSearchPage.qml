@@ -7,8 +7,13 @@ Page {
     id: page
 
     property bool error: locationsModel.status === XmlListModel.Error
-    property bool loading: locationsModel.status === XmlListModel.Loading
-    LocationsModel { id: locationsModel }
+    property bool loading: locationsModel.status === XmlListModel.Loading || loadingTimer.running
+
+    Timer { id: loadingTimer; interval: 600 }
+    LocationsModel {
+        id: locationsModel
+        onStatusChanged: if (status === XmlListModel.Loading) loadingTimer.restart()
+    }
     SilicaListView {
         id: locationListView
         currentIndex: -1
@@ -36,7 +41,7 @@ Page {
             }
         }
         BusyIndicator {
-            running: locationsModel.status === XmlListModel.Loading && locationsModel.filter.length > 2
+            running: loading && locationsModel.filter.length > 0 && locationsModel.count === 0
             anchors.centerIn: placeHolder
             parent: placeHolder.parent
             size: BusyIndicatorSize.Large
@@ -48,18 +53,16 @@ Page {
                 if (error) {
                     //% "Loading failed"
                     return qsTrId("weather-la-loading_failed")
-                } else if (locationsModel.filter.length >= 3 && !loading) {
-                     if (!loading) {
-                        //% "Sorry, we couldn't find anything"
-                        return qsTrId("weather-la-could_not_find_anything")
-                    }
-                } else {
+                } else if (locationsModel.filter.length > 0 && !loading  && locationListView.count == 0) {
+                    //% "Sorry, we couldn't find anything"
+                    return qsTrId("weather-la-could_not_find_anything")
+                } else if (locationsModel.filter.length === 0) {
                     //: Placeholder displayed when user hasn't yet typed a search string
                     //% "Search and select new location"
                     return qsTrId("weather-la-search_and_select_location")
                 }
             }
-            enabled: error || (locationListView.count == 0 && !loading) || locationsModel.filter.length < 3
+            enabled: error || (locationListView.count == 0 && !loading) || locationsModel.filter.length < 1
 
             // TODO: add offset property to ViewPlaceholder
             y: locationListView.originY + Theme.itemSizeExtraSmall
@@ -116,7 +119,8 @@ Page {
                 Label {
                     width: parent.width
                     textFormat: Text.StyledText
-                    text: Theme.highlightText((model.state && model.state.length > 0 ? model.state + ", " : "") + model.country, locationsModel.filter, Theme.highlightColor)
+                    text: Theme.highlightText((model.state && model.state.length > 0 ? model.state + ", " : "")
+                                              + model.country, locationsModel.filter, Theme.highlightColor)
                     color: highlighted ? Theme.secondaryHighlightColor : Theme.secondaryColor
                     font.pixelSize: Theme.fontSizeSmall
                     truncationMode: TruncationMode.Fade
