@@ -146,8 +146,8 @@ Page {
                     onMenuOpenChanged: {
                         if (!menuOpen) {
                             if (moveItemsWhenClosed) {
-                            savedWeathersModel.moveToTop(model.index)
-                            moveItemsWhenClosed = false
+                                savedWeathersModel.moveToTop(model.index)
+                                moveItemsWhenClosed = false
                             }
                             if (setCurrentWhenClosed) {
                                 var current = savedWeathersModel.currentWeather

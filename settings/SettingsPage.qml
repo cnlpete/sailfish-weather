@@ -38,7 +38,6 @@ Page {
                         break
                     }
                 }
-                currentIndex: weatherSettings.distanceUnits
 
                 menu: ContextMenu {
                     MenuItem {
