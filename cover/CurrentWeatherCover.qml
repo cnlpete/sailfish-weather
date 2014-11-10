@@ -38,6 +38,7 @@ Item {
         wrapMode: Text.Wrap
         maximumLineCount: 3
         elide: Text.ElideRight
+        onTextChanged: font.pixelSize = (lineCount == 1) ? Theme.fontSizeLarge : Theme.fontSizeMedium
         anchors {
             left: parent.left
             right: parent.right
