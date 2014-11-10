@@ -77,4 +77,8 @@ CoverBackground {
             }
         }
     }
+    Connections {
+        target: savedWeathersModel
+        onCountChanged: if (savedWeathersModel.count <= 1) current = true
+    }
 }
