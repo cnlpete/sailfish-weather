@@ -115,7 +115,7 @@ Page {
                     width: parent.width
                     color: highlighted ? Theme.secondaryHighlightColor : Theme.secondaryColor
                     text: !model.populated && model.status === Weather.Error ?
-                              //% "Loading current conditions failed."
+                              //% "Loading current conditions failed"
                               qsTrId("weather-la-loading_current_conditions_failed")
                             :
                               model.description
