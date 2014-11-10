@@ -61,9 +61,12 @@ Page {
         }
         model: savedWeathersModel
         delegate: ListItem {
+            id: savedWeatherItem
+
             function remove() {
                 remorseAction("Deleting", function() { savedWeathersModel.remove(locationId) })
             }
+            ListView.onAdd: AddAnimation { target: savedWeatherItem }
             ListView.onRemove: animateRemoval()
             menu: contextMenuComponent
             contentHeight: Theme.itemSizeMedium
@@ -135,12 +138,34 @@ Page {
                 id: contextMenuComponent
                 ContextMenu {
                     property bool moveItemsWhenClosed
+                    property bool setCurrentWhenClosed
                     property bool menuOpen: height > 0
 
                     onMenuOpenChanged: {
-                        if (!menuOpen && moveItemsWhenClosed) {
+                        if (!menuOpen) {
+                            if (moveItemsWhenClosed) {
                             savedWeathersModel.moveToTop(model.index)
                             moveItemsWhenClosed = false
+                            }
+                            if (setCurrentWhenClosed) {
+                                var current = savedWeathersModel.currentWeather
+                                if (!current || current.locationId !== model.locationId) {
+                                    var weather = {
+                                        "locationId": model.locationId,
+                                        "city": model.city,
+                                        "state": model.state,
+                                        "country": model.country,
+                                        "temperature": model.temperature,
+                                        "temperatureFeel": model.temperatureFeel,
+                                        "weatherType": model.weatherType,
+                                        "description": model.description,
+                                        "timestamp": model.timestamp
+                                    }
+                                    savedWeathersModel.setCurrentWeather(weather)
+
+                                }
+                                setCurrentWhenClosed = false
+                            }
                         }
                     }
 
@@ -153,24 +178,7 @@ Page {
                         //% "Set as current"
                         text: qsTrId("weather-me-set_as_current")
                         visible: model.status !== Weather.Error
-                        onClicked: {
-                            var current = savedWeathersModel.currentWeather
-                            if (!current || current.locationId !== model.locationId) {
-                                var weather = {
-                                    "locationId": model.locationId,
-                                    "city": model.city,
-                                    "state": model.state,
-                                    "country": model.country,
-                                    "temperature": model.temperature,
-                                    "temperatureFeel": model.temperatureFeel,
-                                    "weatherType": model.weatherType,
-                                    "description": model.description,
-                                    "timestamp": model.timestamp
-                                }
-                                savedWeathersModel.setCurrentWeather(weather)
-
-                            }
-                        }
+                        onClicked: setCurrentWhenClosed = true
                     }
                     MenuItem {
                         //% "Move to top"

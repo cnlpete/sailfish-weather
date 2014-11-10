@@ -88,10 +88,10 @@ Page {
                     "state": model.state,
                     "country": model.country
                 }
-                savedWeathersModel.addLocation(location)
-
                 if (!savedWeathersModel.currentWeather) {
                     savedWeathersModel.setCurrentWeather(location)
+                } else {
+                    savedWeathersModel.addLocation(location)
                 }
 
                 pageStack.pop()
