@@ -53,8 +53,11 @@ CoverBackground {
         CoverAction {
             iconSource: "image://theme/icon-cover-search"
             onTriggered: {
+                var alreadyOpen = pageStack.currentPage && pageStack.currentPage.objectName === "LocationSearchPage"
+                if (!alreadyOpen) {
+                    pageStack.push(Qt.resolvedUrl("../pages/LocationSearchPage.qml"), undefined, PageStackAction.Immediate)
+                }
                 weatherApplication.activate()
-                pageStack.push(Qt.resolvedUrl("../pages/LocationSearchPage.qml"), undefined, PageStackAction.Immediate)
             }
         }
     }

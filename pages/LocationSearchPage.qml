@@ -8,6 +8,7 @@ Page {
 
     property bool error: locationsModel.status === XmlListModel.Error
     property bool loading: locationsModel.status === XmlListModel.Loading || loadingTimer.running
+    objectName: "LocationSearchPage"
 
     Timer { id: loadingTimer; interval: 600 }
     LocationsModel {
