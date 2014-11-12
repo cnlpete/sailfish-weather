@@ -16,8 +16,10 @@ BuildRequires:  qt5-qttools
 BuildRequires:  qt5-qttools-linguist
 
 Requires:  sailfishsilica-qt5
-Requires:  sailfish-components-weather-qt5
+Requires:  sailfish-components-weather-qt5 >= 0.0.5
 Requires:  mapplauncherd-booster-silica-qt5
+Requires:  connman-qt5-declarative
+Requires:  jolla-settings-system
 
 %description
 Sailfish-style Weather application
@@ -32,7 +34,7 @@ Translation source for %{name}
 %setup -q -n %{name}-%{version}
 
 %build
-%qmake5 PREFIX=/usr
+%qmake5 sailfish-weather.pro
 make %{_smp_mflags}
 
 %install
@@ -50,6 +52,9 @@ desktop-file-install --delete-original       \
 %{_datadir}/sailfish-weather/*
 %{_bindir}/sailfish-weather
 %{_datadir}/translations/weather_eng_en.qm
+%{_datadir}/jolla-settings/entries/sailfish-weather.json
+%{_datadir}/jolla-settings/pages/sailfish-weather
+%{_libdir}/qt5/qml/org/sailfishos/weather/settings
 
 %files ts-devel
 %defattr(-,root,root,-)

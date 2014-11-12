@@ -2,10 +2,9 @@ import QtQuick 2.0
 import Sailfish.Silica 1.0
 import Sailfish.Weather 1.0
 
-Page {    
+Page {
     SilicaListView {
         id: weatherListView
-
         PullDownMenu {
             MenuItem {
                 //% "New location"
@@ -13,9 +12,10 @@ Page {
                 onClicked: pageStack.push(Qt.resolvedUrl("LocationSearchPage.qml"))
             }
             MenuItem {
-                //% "Check weather"
-                text: qsTrId("weather-me-weather")
+                //% "Update"
+                text: qsTrId("weather-me-update")
                 onClicked: reloadTimer.restart()
+                enabled: savedWeathersModel.currentWeather || savedWeathersModel.count > 0
                 Timer {
                     id: reloadTimer
                     interval: 500
@@ -27,36 +27,11 @@ Page {
         header: Column {
             width: parent.width
             spacing: Theme.paddingLarge
-            PageHeader {
-                title: savedWeathersModel.currentWeather ? savedWeathersModel.currentWeather.city : ""
-                Label {
-                    id: secondaryLabel
-                    font.pixelSize: Theme.fontSizeSmall
-                    color: Theme.secondaryHighlightColor
-                    text: savedWeathersModel.currentWeather ? savedWeathersModel.currentWeather.state + "," + savedWeathersModel.currentWeather.country
-                                                            : ""
-                    horizontalAlignment: Text.AlignRight
-                    anchors {
-                        left: parent.left
-                        right: parent.right
-                        bottom: parent.bottom
-                        bottomMargin: -Theme.paddingSmall
-                        rightMargin: Theme.paddingLarge
-                    }
-                }
-                OpacityRampEffect {
-                    sourceItem: secondaryLabel
-                    direction: OpacityRamp.RightToLeft
-                    offset: 0.75
-                    slope: 4
-                }
-            }
-            WeatherItem {
+            WeatherHeader {
                 opacity: currentWeatherAvailable ? 1.0 : 0.0
-                Behavior on opacity { FadeAnimation {}}
                 weather: savedWeathersModel.currentWeather
                 onClicked: {
-                    pageStack.push("WeatherPage.qml", {"weather": savedWeathersModel.currentWeather })
+                    pageStack.push("WeatherPage.qml", {"weather": weather, "weatherModel": currentWeatherModel, "current": true })
                 }
             }
             Item {
@@ -65,40 +40,47 @@ Page {
             }
         }
         PlaceholderItem {
+            flickable: weatherListView
             parent: weatherListView.contentItem
-            y: weatherListView.originY + Theme.itemSizeSmall + Theme.itemSizeLarge*2
-            status: savedWeathersModel.currentWeather ? savedWeathersModel.currentWeather.status : Weather.Null
-            text: !savedWeathersModel.currentWeather ?
-                      //% "Add your location to see the weather"
-                      qsTrId("weather-la-add_your_location_to_see_weather")
-                    :
-                      savedWeathersModel.currentWeather.status == Weather.Error ?
-                          //% "Loading failed"
-                          qsTrId("weather-la-loading_failed")
-                        :
-                      //% "Loading"
-                      qsTrId("weather-la-loading")
-            onReload: {
-                if (savedWeathersModel.currentWeather) {
-                    weatherApplication.reload(savedWeathersModel.currentWeather.locationId)
+            y: weatherListView.originY + Theme.itemSizeSmall + (currentWeatherAvailable ? weatherListView.headerItem.height : 2*Theme.itemSizeLarge)
+            enabled: !currentWeatherAvailable || savedWeathersModel.count === 0
+            error: savedWeathersModel.currentWeather && savedWeathersModel.currentWeather.status === Weather.Error
+            empty: !savedWeathersModel.currentWeather || savedWeathersModel.count == 0
+            text: {
+                if (error) {
+                    //% "Loading failed"
+                    return qsTrId("weather-la-loading_failed")
+                } else if (empty) {
+                    if (currentWeatherAvailable) {
+                        //% "Pull down to add another weather location"
+                        return qsTrId("weather-la-pull_down_to_add_another_location")
+                    } else {
+                        //% "Pull down to select your location"
+                        return qsTrId("weather-la-pull_down_to_select_your_location")
+                    }
+                } else {
+                    //% "Loading"
+                    return qsTrId("weather-la-loading")
                 }
             }
+            onReload: weatherApplication.reload(savedWeathersModel.currentWeather.locationId)
         }
         model: savedWeathersModel
         delegate: ListItem {
-            menu: contextMenuComponent
-            implicitHeight: Theme.itemSizeMedium
+            id: savedWeatherItem
+
             function remove() {
                 remorseAction("Deleting", function() { savedWeathersModel.remove(locationId) })
             }
+            ListView.onAdd: AddAnimation { target: savedWeatherItem }
             ListView.onRemove: animateRemoval()
+            menu: contextMenuComponent
+            contentHeight: Theme.itemSizeMedium
             onClicked: {
-                if (model.status == Weather.Error) {
-                    weatherApplication.reload(model.locationId)
-                } else {
-                    pageStack.push("WeatherPage.qml", {"weather": savedWeathersModel.get(model.locationId) })
-                }
+                pageStack.push("WeatherPage.qml", {"weather": savedWeathersModel.get(model.locationId),
+                                   "weatherModel": weatherModels[model.locationId] })
             }
+
             Image {
                 id: icon
                 x: Theme.paddingLarge
@@ -132,31 +114,63 @@ Page {
                 Label {
                     width: parent.width
                     color: highlighted ? Theme.secondaryHighlightColor : Theme.secondaryColor
-                    text: model.status === Weather.Error ?
-                              //% "Loading failed. Tap to reload"
-                              qsTrId("weather-la-loading_failed_tap_to_reload")
+                    text: !model.populated && model.status === Weather.Error ?
+                              //% "Loading current conditions failed"
+                              qsTrId("weather-la-loading_current_conditions_failed")
                             :
                               model.description
-                    truncationMode: model.status === Weather.Error ? TruncationMode.None : TruncationMode.Fade
+                    truncationMode: TruncationMode.Fade
                     font.pixelSize: Theme.fontSizeSmall
                 }
             }
             Label {
                 id: temperatureLabel
-                // TODO: support Fahrenheit
-                text: model.temperature + "\u00B0"
+                text: TemperatureConverter.format(model.temperature)
                 color: highlighted ? Theme.secondaryHighlightColor : Theme.secondaryColor
-                font.pixelSize: Theme.fontSizeLarge
+                font.pixelSize: Theme.fontSizeHuge
                 anchors {
                     verticalCenter: parent.verticalCenter
                     right: parent.right
                     rightMargin: Theme.paddingLarge
                 }
-                visible: model.status == Weather.Ready
+                width: visible ? implicitWidth : 0
+                visible: model.populated
             }
             Component {
                 id: contextMenuComponent
                 ContextMenu {
+                    property bool moveItemsWhenClosed
+                    property bool setCurrentWhenClosed
+                    property bool menuOpen: height > 0
+
+                    onMenuOpenChanged: {
+                        if (!menuOpen) {
+                            if (moveItemsWhenClosed) {
+                                savedWeathersModel.moveToTop(model.index)
+                                moveItemsWhenClosed = false
+                            }
+                            if (setCurrentWhenClosed) {
+                                var current = savedWeathersModel.currentWeather
+                                if (!current || current.locationId !== model.locationId) {
+                                    var weather = {
+                                        "locationId": model.locationId,
+                                        "city": model.city,
+                                        "state": model.state,
+                                        "country": model.country,
+                                        "temperature": model.temperature,
+                                        "temperatureFeel": model.temperatureFeel,
+                                        "weatherType": model.weatherType,
+                                        "description": model.description,
+                                        "timestamp": model.timestamp
+                                    }
+                                    savedWeathersModel.setCurrentWeather(weather)
+
+                                }
+                                setCurrentWhenClosed = false
+                            }
+                        }
+                    }
+
                     MenuItem {
                         //% "Remove"
                         text: qsTrId("weather-me-remove")
@@ -165,9 +179,25 @@ Page {
                     MenuItem {
                         //% "Set as current"
                         text: qsTrId("weather-me-set_as_current")
-                        onClicked: savedWeathersModel.currentLocationId = model.locationId
+                        visible: model.status !== Weather.Error
+                        onClicked: setCurrentWhenClosed = true
+                    }
+                    MenuItem {
+                        //% "Move to top"
+                        text: qsTrId("weather-me-move_to_top")
+                        visible: model.index !== 0
+                        onClicked: moveItemsWhenClosed = true
                     }
                 }
+            }
+        }
+        footer: Item {
+            width: parent.width
+            height: disclaimer.height
+            ProviderDisclaimer {
+                id: disclaimer
+                y: Math.max(0, Screen.height - weatherListView.contentHeight)
+                weather: savedWeathersModel.currentWeather
             }
         }
         VerticalScrollDecorator {}

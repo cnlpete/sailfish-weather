@@ -1,13 +1,7 @@
-TARGET = sailfish-weather
+TEMPLATE = subdirs
 
-CONFIG += warn_on
+application.file = application.pro
 
-SOURCES += weather.cpp
+settings.subdir = settings
 
-qml.files = weather.qml cover pages
-desktop.files = sailfish-weather.desktop
-
-include(sailfishapplication/sailfishapplication.pri)
-include(translations.pri)
-
-OTHER_FILES = rpm/sailfish-weather.spec
+SUBDIRS = application settings

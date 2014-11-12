@@ -8,9 +8,6 @@
 
 Q_DECL_EXPORT int main(int argc, char *argv[])
 {
-    //% "Weather"
-    QT_TRID_NOOP("weather-ap-name");
-
     QScopedPointer<QTranslator> engineeringEnglish(new QTranslator);
     engineeringEnglish->load("weather_eng_en", TRANSLATIONS_PATH);
     QScopedPointer<QTranslator> translator(new QTranslator);
@@ -22,6 +19,9 @@ Q_DECL_EXPORT int main(int argc, char *argv[])
 
     QScopedPointer<QQuickView> view(Sailfish::createView("weather.qml"));
     Sailfish::showView(view.data());
+
+    //% "Weather"
+    view->setTitle(qtTrId("weather-ap-name"));
 
     int result = app->exec();
     app->removeTranslator(translator.data());
