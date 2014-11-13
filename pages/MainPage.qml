@@ -161,7 +161,8 @@ Page {
                                         "temperatureFeel": model.temperatureFeel,
                                         "weatherType": model.weatherType,
                                         "description": model.description,
-                                        "timestamp": model.timestamp
+                                        "timestamp": model.timestamp,
+                                        "populated": model.populated
                                     }
                                     savedWeathersModel.setCurrentWeather(weather)
 
@@ -179,7 +180,7 @@ Page {
                     MenuItem {
                         //% "Set as current"
                         text: qsTrId("weather-me-set_as_current")
-                        visible: model.status !== Weather.Error
+                        visible: model.populated
                         onClicked: setCurrentWhenClosed = true
                     }
                     MenuItem {
