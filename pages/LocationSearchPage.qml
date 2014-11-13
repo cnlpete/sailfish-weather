@@ -42,7 +42,7 @@ Page {
             }
         }
         BusyIndicator {
-            running: loading && locationsModel.filter.length > 0 && locationsModel.count === 0
+            running: !error && loading && locationsModel.filter.length > 0 && locationsModel.count === 0
             anchors.centerIn: placeHolder
             parent: placeHolder.parent
             size: BusyIndicatorSize.Large
