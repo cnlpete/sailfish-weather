@@ -29,7 +29,7 @@ CoverBackground {
         anchors.fill: parent
     }
     Loader {
-        active: ready && savedWeathersModel.count > 1
+        active: ready && savedWeathersModel.count > 0
         opacity: ready && !current ? 1.0 : 0.0
         source: "WeatherListCover.qml"
         Behavior on opacity { FadeAnimation {} }
@@ -71,7 +71,7 @@ CoverBackground {
         }
     }
     CoverActionList {
-        enabled: ready && savedWeathersModel.count > 1
+        enabled: ready && savedWeathersModel.count > 0
         CoverAction {
             iconSource: current ? "image://theme/icon-cover-previous"
                                     : "image://theme/icon-cover-next"
@@ -82,6 +82,6 @@ CoverBackground {
     }
     Connections {
         target: savedWeathersModel
-        onCountChanged: if (savedWeathersModel.count <= 1) current = true
+        onCountChanged: if (savedWeathersModel.count === 0) current = true
     }
 }
