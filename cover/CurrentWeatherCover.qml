@@ -3,50 +3,36 @@ import Sailfish.Silica 1.0
 import Sailfish.Weather 1.0
 
 Item {
+    WeatherCoverItem {
+        x: Theme.paddingLarge
+        width: parent.width - 2*x
+        topPadding: Theme.paddingLarge
+        text: weather.status === Weather.Error ? model.city : TemperatureConverter.format(weather.temperature) + " " + weather.city
+        //% "Loading failed"
+        description: weather.status === Weather.Error ? qsTrId("weather-la-loading_failed") : weather.description
+    }
     WeatherImage {
         id: weatherImage
 
-        y: -Theme.paddingLarge
-        opacity: 0.4
         height: width
-        width: parent.width
+        width: parent.width - Theme.paddingLarge
         sourceSize.width: width
         sourceSize.height: width
         weatherType: weather ? weather.weatherType : ""
-        anchors.horizontalCenter: parent.horizontalCenter
+        anchors {
+            centerIn: parent
+            verticalCenterOffset: Theme.paddingSmall
+        }
     }
     Image {
         scale: 0.5
         opacity: 0.5
         anchors {
-            bottom: temperatureLabel.top
-            bottomMargin: -Theme.paddingMedium
+            bottom: parent.bottom
+            bottomMargin: Math.round(Theme.paddingSmall/2)
             horizontalCenter: parent.horizontalCenter
         }
         source: "image://theme/graphic-foreca"
     }
-    Label {
-        id: temperatureLabel
-        font.pixelSize: Theme.fontSizeHuge
-        text: weather ? TemperatureConverter.format(weather.temperature) : ""
-        anchors.centerIn: weatherImage
-    }
-    Label {
-        text: weather ? weather.description : ""
-        horizontalAlignment: Text.AlignHCenter
-        verticalAlignment: Text.AlignVCenter
-        wrapMode: Text.Wrap
-        maximumLineCount: 3
-        elide: Text.ElideRight
-        onTextChanged: font.pixelSize = (lineCount == 1) ? Theme.fontSizeLarge : Theme.fontSizeMedium
-        anchors {
-            left: parent.left
-            right: parent.right
-            top: temperatureLabel.bottom
-            leftMargin: Theme.paddingLarge
-            rightMargin: Theme.paddingLarge
-            bottom: parent.bottom
-            bottomMargin: Theme.itemSizeSmall
-        }
-    }
+
 }
