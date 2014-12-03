@@ -21,29 +21,15 @@ Item {
         pathItemCount: count > 4 ? 5 : Math.min(visibleItemCount, count)
         height: Math.min(visibleItemCount, count)/visibleItemCount*maximumHeight
         offset: rollIndex + rollOffset
-        delegate: Column {
-
+        delegate: WeatherCoverItem {
             property bool aboutToSlideIn: view.rollOffset === 0 && model.index === (view.count - view.rollIndex) % view.count
 
             width: view.width
             visible: view.count <= 4 || !aboutToSlideIn
-            Item {
-                width: parent.width
-                height: Theme.paddingLarge + Theme.paddingMedium
-            }
-            Label {
-                width: parent.width
-                text: model.status === Weather.Error ? model.city : TemperatureConverter.format(model.temperature) + " " + model.city
-                truncationMode: TruncationMode.Fade
-            }
-            Label {
-                width: parent.width
-                //% "Loading failed"
-                text: model.status === Weather.Error ? qsTrId("weather-la-loading_failed") : model.description
-                truncationMode: TruncationMode.Fade
-                font.pixelSize: Theme.fontSizeExtraSmall
-                color: Theme.secondaryColor
-            }
+            topPadding: Theme.paddingLarge + Theme.paddingMedium
+            text: model.status === Weather.Error ? model.city : TemperatureConverter.format(model.temperature) + " " + model.city
+            //% "Loading failed"
+            description: model.status === Weather.Error ? qsTrId("weather-la-loading_failed") : model.description
         }
         path: Path {
             startX: view.width/2; startY: view.count > 4 ? -itemHeight/2 : itemHeight/2
