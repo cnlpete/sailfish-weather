@@ -75,7 +75,7 @@ Page {
             ListView.onAdd: AddAnimation { target: savedWeatherItem }
             ListView.onRemove: animateRemoval()
             menu: contextMenuComponent
-            contentHeight: Theme.itemSizeMedium
+            contentHeight: labelColumn.implicitHeight + 2*Theme.paddingMedium
             onClicked: {
                 pageStack.push("WeatherPage.qml", {"weather": savedWeathersModel.get(model.locationId),
                                    "weatherModel": weatherModels[model.locationId] })
@@ -86,7 +86,7 @@ Page {
                 x: Theme.paddingLarge
                 width: Theme.iconSizeMedium
                 height: Theme.iconSizeMedium
-                anchors.verticalCenter: parent.verticalCenter
+                anchors.verticalCenter: labelColumn.verticalCenter
                 sourceSize.width: width
                 sourceSize.height: height
                 visible: model.status !== Weather.Loading
@@ -99,19 +99,27 @@ Page {
                 anchors.centerIn: icon
             }
             Column {
+                id: labelColumn
+
+                y: Theme.paddingMedium
+                height: cityLabel.height + descriptionLabel.lineHeight
                 anchors {
                     left: icon.right
                     right: temperatureLabel.left
-                    margins: Theme.paddingMedium
-                    verticalCenter: parent.verticalCenter
+                    leftMargin: Theme.paddingMedium
+                    rightMargin: Theme.paddingSmall
                 }
                 Label {
+                    id: cityLabel
                     width: parent.width
                     color: highlighted ? Theme.highlightColor : Theme.primaryColor
                     text: model.city
                     truncationMode: TruncationMode.Fade
                 }
                 Label {
+                    id: descriptionLabel
+
+                    property real lineHeight: height/lineCount
                     width: parent.width
                     color: highlighted ? Theme.secondaryHighlightColor : Theme.secondaryColor
                     text: !model.populated && model.status === Weather.Error ?
@@ -119,8 +127,9 @@ Page {
                               qsTrId("weather-la-loading_current_conditions_failed")
                             :
                               model.description
-                    truncationMode: TruncationMode.Fade
                     font.pixelSize: Theme.fontSizeSmall
+                    elide: Text.ElideRight
+                    wrapMode: Text.Wrap
                 }
             }
             Label {
@@ -129,7 +138,7 @@ Page {
                 color: highlighted ? Theme.secondaryHighlightColor : Theme.secondaryColor
                 font.pixelSize: Theme.fontSizeHuge
                 anchors {
-                    verticalCenter: parent.verticalCenter
+                    verticalCenter: labelColumn.verticalCenter
                     right: parent.right
                     rightMargin: Theme.paddingLarge
                 }
