@@ -70,7 +70,8 @@ Page {
             id: savedWeatherItem
 
             function remove() {
-                remorseAction("Deleting", function() { savedWeathersModel.remove(locationId) })
+                //% "Deleting"
+                remorseAction(qsTrId("weather-la-deleting"), function() { savedWeathersModel.remove(locationId) })
             }
             ListView.onAdd: AddAnimation { target: savedWeatherItem }
             ListView.onRemove: animateRemoval()
