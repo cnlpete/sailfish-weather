@@ -2,7 +2,7 @@
 Type=Application
 Name=Weather
 X-MeeGo-Logical-Id=weather-ap-name
-X-MeeGo-Translation-Catalog=voicecall
+X-MeeGo-Translation-Catalog=weather
 Icon=icon-launcher-weather
 Exec=invoker --type=silica-qt5 -n -d 5 -s  /usr/bin/sailfish-weather
 Comment=Sailfish Weather
