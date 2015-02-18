@@ -14,6 +14,10 @@ ApplicationWindow {
 
     initialPage: Component { MainPage {} }
     cover: Component { WeatherCover {} }
+    allowedOrientations: Screen.sizeCategory > Screen.Medium
+                         ? defaultAllowedOrientations
+                         : defaultAllowedOrientations & Orientation.PortraitMask
+    _defaultPageOrientations: Orientation.All
 
     signal reload(int locationId)
     signal reloadAll()
