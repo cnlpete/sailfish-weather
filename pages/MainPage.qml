@@ -84,7 +84,7 @@ Page {
 
             Image {
                 id: icon
-                x: Theme.paddingLarge
+                x: Theme.horizontalPageMargin
                 width: Theme.iconSizeMedium
                 height: Theme.iconSizeMedium
                 anchors.verticalCenter: labelColumn.verticalCenter
@@ -141,7 +141,7 @@ Page {
                 anchors {
                     verticalCenter: labelColumn.verticalCenter
                     right: parent.right
-                    rightMargin: Theme.paddingLarge
+                    rightMargin: Theme.horizontalPageMargin
                 }
                 width: visible ? implicitWidth : 0
                 visible: model.populated
