@@ -107,7 +107,8 @@ Page {
                 anchors {
                     left: parent.left
                     right: parent.right
-                    leftMargin: Theme.itemSizeSmall + Theme.paddingMedium
+                    rightMargin: Theme.horizontalPageMargin - Theme.paddingMedium
+                    leftMargin: Theme.itemSizeSmall + Theme.horizontalPageMargin - Theme.paddingMedium
                     verticalCenter: parent.verticalCenter
                 }
                 Label {
