@@ -12,6 +12,19 @@ CoverBackground {
     property bool loaded: savedWeathersModel.currentWeather
     property bool error: loaded && savedWeathersModel.currentWeather.status == Weather.Error
 
+    function reload() {
+        if (current) {
+            if (savedWeathersModel.currentWeather && currentWeatherModel.updateAllowed()) {
+                currentWeatherModel.reload()
+            }
+        } else if (savedWeathersModel.count > 1) {
+            weatherApplication.reloadAllIfAllowed()
+        }
+    }
+
+    onStatusChanged: if (status == Cover.Active) reload()
+    onCurrentChanged: reload()
+
     CoverPlaceholder {
         visible: !ready
         icon.source: "image://theme/graphic-foreca"
@@ -34,18 +47,6 @@ CoverBackground {
         source: "WeatherListCover.qml"
         Behavior on opacity { FadeAnimation {} }
         anchors.fill: parent
-    }
-
-    onStatusChanged: {
-        if (status == Cover.Active) {
-            if (current) {
-                if (savedWeathersModel.currentWeather && currentWeatherModel.updateAllowed()) {
-                    currentWeatherModel.reload()
-                }
-            } else if (savedWeathersModel.count > 1) {
-                weatherApplication.reloadAllIfAllowed()
-            }
-        }
     }
 
     CoverActionList {
