@@ -15,12 +15,15 @@ BuildRequires:  pkgconfig(qdeclarative5-boostable)
 BuildRequires:  qt5-qttools
 BuildRequires:  qt5-qttools-linguist
 
-%define _all_translations_version %(rpm -q --queryformat "%%{version}-%%{release}" %{name}-all-translations)
+%if %{with l10n}
 BuildRequires: %{name}-all-translations
+#!BuildIgnore: %{name}-all-translations-pack
+%define _all_translations_version %(rpm -q --queryformat "%%{version}-%%{release}" %{name}-all-translations)
 Requires: %{name}-all-translations >= %{_all_translations_version}
+%endif
 
 Requires:  sailfishsilica-qt5
-Requires:  sailfish-components-weather-qt5 >= 0.0.5
+Requires:  sailfish-components-weather-qt5 >= 0.2.6
 Requires:  mapplauncherd-booster-silica-qt5
 Requires:  connman-qt5-declarative
 Requires:  jolla-settings-system

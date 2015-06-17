@@ -84,13 +84,9 @@ Page {
             Image {
                 id: icon
                 x: Theme.horizontalPageMargin
-                width: Theme.iconSizeMedium
-                height: Theme.iconSizeMedium
                 anchors.verticalCenter: labelColumn.verticalCenter
-                sourceSize.width: width
-                sourceSize.height: height
                 visible: model.status !== Weather.Loading
-                source: model.weatherType.length > 0 ? "image://theme/graphic-weather-" + model.weatherType
+                source: model.weatherType.length > 0 ? "image://theme/graphic-m-weather-" + model.weatherType
                                                         + (highlighted ? "?" + Theme.highlightColor : "")
                                                       : ""
             }
