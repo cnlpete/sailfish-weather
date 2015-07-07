@@ -58,6 +58,7 @@ desktop-file-install --delete-original       \
 %{_datadir}/translations/weather_eng_en.qm
 %{_datadir}/jolla-settings/entries/sailfish-weather.json
 %{_datadir}/jolla-settings/pages/sailfish-weather
+%{_datadir}/dbus-1/services/com.jolla.weather.service
 %{_libdir}/qt5/qml/org/sailfishos/weather/settings
 
 %files ts-devel

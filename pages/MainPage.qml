@@ -1,6 +1,7 @@
 import QtQuick 2.0
 import Sailfish.Silica 1.0
 import Sailfish.Weather 1.0
+import org.nemomobile.dbus 1.0
 
 Page {
     SilicaListView {
@@ -207,5 +208,23 @@ Page {
             }
         }
         VerticalScrollDecorator {}
+    }
+
+    DBusAdaptor {
+        service: "com.jolla.weather"
+        path: "/com/jolla/weather"
+        iface: "com.jolla.weather"
+        xml: "  <interface name=\"com.jolla.weather\">\n" +
+             "    <method name=\"newLocation\"/>\n" +
+             "  </interface>\n"
+
+        signal newLocation
+
+        onNewLocation: {
+            var alreadyOpen = pageStack.currentPage && pageStack.currentPage.objectName === "LocationSearchPage"
+            if (!alreadyOpen)
+                pageStack.push(Qt.resolvedUrl("LocationSearchPage.qml"), undefined, PageStackAction.Immediate)
+            weatherApplication.activate()
+        }
     }
 }
