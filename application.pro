@@ -7,7 +7,14 @@ SOURCES += weather.cpp
 qml.files = weather.qml cover model pages
 desktop.files = sailfish-weather.desktop
 
+dbus_service.files = com.jolla.weather.service
+dbus_service.path = /usr/share/dbus-1/services
+
 include(sailfishapplication/sailfishapplication.pri)
 include(translations.pri)
 
-OTHER_FILES = rpm/sailfish-weather.spec
+INSTALLS += dbus_service
+
+OTHER_FILES = \
+    com.jolla.weather.service
+    rpm/sailfish-weather.spec
