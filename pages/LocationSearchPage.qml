@@ -31,13 +31,21 @@ Page {
 
                 //% "Search locations"
                 placeholderText: qsTrId("weather-la-search_locations")
-                focus: page.status == PageStatus.Active && locationListView.atYBeginning
                 onFocusChanged: if (focus) forceActiveFocus()
                 width: parent.width
+                EnterKey.iconSource: "image://theme/icon-m-enter-close"
+                EnterKey.onClicked: focus = false
+
                 Binding {
                     target: locationsModel
                     property: "filter"
                     value: searchField.text.toLowerCase().trim()
+                }
+                Binding {
+                    target: searchField
+                    property: "focus"
+                    value: true
+                    when: page.status == PageStatus.Active && locationListView.atYBeginning
                 }
             }
         }
