@@ -3,7 +3,7 @@ Summary:    Weather application
 Version:    0.1
 Release:    1
 Group:      System/Applications
-License:    TBD
+License:    Proprietary
 URL:        https://bitbucket.org/jolla/ui-sailfish-weather
 Source0:    %{name}-%{version}.tar.bz2
 BuildRequires:  pkgconfig(Qt5Core)
