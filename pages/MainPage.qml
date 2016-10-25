@@ -53,9 +53,13 @@ Page {
                     return qsTrId("weather-la-loading_failed")
                 } else if (empty) {
                     if (currentWeatherAvailable) {
-                        //% "Pull down to add another weather location"
-                        return qsTrId("weather-la-pull_down_to_add_another_location")
-                    } else {
+                        if (counter.active) {
+                            //% "Pull down to add another weather location"
+                            return qsTrId("weather-la-pull_down_to_add_another_location")
+                        } else {
+                            return ""
+                        }
+                   } else {
                         //% "Pull down to select your location"
                         return qsTrId("weather-la-pull_down_to_select_your_location")
                     }
@@ -65,6 +69,15 @@ Page {
                 }
             }
             onReload: weatherApplication.reload(savedWeathersModel.currentWeather.locationId)
+
+            // Only show pull down to add another location hint twice on app startup
+            FirstTimeUseCounter {
+                id: counter
+                limit: 2
+                key: "/sailfish/weather/pull_down_to_add_another_location_hint_count"
+                property bool showLocationHint: active && currentWeatherAvailable
+                onShowLocationHintChanged: if (showLocationHint) counter.increase()
+            }
         }
         model: savedWeathersModel
         delegate: ListItem {
