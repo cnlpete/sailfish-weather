@@ -44,7 +44,7 @@ Page {
             flickable: weatherListView
             parent: weatherListView.contentItem
             y: weatherListView.originY + Theme.itemSizeSmall + (currentWeatherAvailable ? weatherListView.headerItem.height : 2*Theme.itemSizeLarge)
-            enabled: !currentWeatherAvailable || savedWeathersModel.count === 0
+            enabled: !currentWeatherAvailable || (savedWeathersModel.count === 0 && counter.active)
             error: savedWeathersModel.currentWeather && savedWeathersModel.currentWeather.status === Weather.Error
             empty: !savedWeathersModel.currentWeather || savedWeathersModel.count == 0
             text: {
