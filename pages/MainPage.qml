@@ -1,7 +1,7 @@
 import QtQuick 2.0
 import Sailfish.Silica 1.0
 import Sailfish.Weather 1.0
-import org.nemomobile.dbus 1.0
+import Nemo.DBus 2.0
 
 Page {
     SilicaListView {
