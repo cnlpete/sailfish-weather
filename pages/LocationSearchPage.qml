@@ -14,6 +14,7 @@ Page {
     LocationsModel {
         id: locationsModel
         onStatusChanged: if (status === XmlListModel.Loading) loadingTimer.restart()
+        onFilterChanged: delayedFilter.restart()
     }
     SilicaListView {
         id: locationListView
@@ -55,22 +56,34 @@ Page {
             parent: placeHolder.parent
             size: BusyIndicatorSize.Large
         }
-
         ViewPlaceholder {
             id: placeHolder
             text: {
                 if (error) {
                     //% "Loading failed"
                     return qsTrId("weather-la-loading_failed")
-                } else if (locationsModel.filter.length > 0 && !loading && locationListView.count == 0) {
-                    //% "Sorry, we couldn't find anything"
-                    return qsTrId("weather-la-could_not_find_anything")
                 } else if (locationsModel.filter.length === 0) {
                     //: Placeholder displayed when user hasn't yet typed a search string
                     //% "Search and select new location"
                     return qsTrId("weather-la-search_and_select_location")
+                } else if (!loading && !delayedFilter.running && locationListView.count == 0) {
+                    if (locationsModel.filter.length < 3) {
+                        //% "Type at least three characters to perform a search"
+                        return qsTrId("weather-la-search_three_characters_required")
+                    } else {
+                        //% "Sorry, we couldn't find anything"
+                        return qsTrId("weather-la-could_not_find_anything")
+                    }
                 }
+                return ""
             }
+
+            // Suppress error label flicker when filter has changed but model loading state hasn't yet had time to update
+            Timer {
+                id: delayedFilter
+                interval: 1
+            }
+
             enabled: error || (locationListView.count == 0 && !loading) || locationsModel.filter.length < 1
 
             // TODO: add offset property to ViewPlaceholder
