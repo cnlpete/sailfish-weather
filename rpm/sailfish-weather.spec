@@ -19,7 +19,7 @@ BuildRequires: %{name}-all-translations
 %define _all_translations_version %(rpm -q --queryformat "%%{version}-%%{release}" %{name}-all-translations)
 Requires: %{name}-all-translations >= %{_all_translations_version}
 
-Requires:  sailfishsilica-qt5
+Requires:  sailfishsilica-qt5 >= 0.27.0
 Requires:  sailfish-components-weather-qt5 >= 0.2.6
 Requires:  mapplauncherd-booster-silica-qt5
 Requires:  connman-qt5-declarative

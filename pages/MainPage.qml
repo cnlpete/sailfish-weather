@@ -10,7 +10,7 @@ Page {
             MenuItem {
                 //% "New location"
                 text: qsTrId("weather-me-new_location")
-                onClicked: pageStack.push(Qt.resolvedUrl("LocationSearchPage.qml"))
+                onClicked: pageStack.animatorPush(Qt.resolvedUrl("LocationSearchPage.qml"))
             }
             MenuItem {
                 //% "Update"
@@ -32,7 +32,7 @@ Page {
                 opacity: currentWeatherAvailable ? 1.0 : 0.0
                 weather: savedWeathersModel.currentWeather
                 onClicked: {
-                    pageStack.push("WeatherPage.qml", {"weather": weather, "weatherModel": currentWeatherModel, "current": true })
+                    pageStack.animatorPush("WeatherPage.qml", {"weather": weather, "weatherModel": currentWeatherModel, "current": true })
                 }
             }
             Item {
@@ -59,7 +59,7 @@ Page {
                         } else {
                             return ""
                         }
-                   } else {
+                    } else {
                         //% "Pull down to select your location"
                         return qsTrId("weather-la-pull_down_to_select_your_location")
                     }
@@ -91,8 +91,8 @@ Page {
             menu: contextMenuComponent
             contentHeight: labelColumn.implicitHeight + 2*Theme.paddingMedium
             onClicked: {
-                pageStack.push("WeatherPage.qml", {"weather": savedWeathersModel.get(model.locationId),
-                                   "weatherModel": weatherModels[model.locationId] })
+                pageStack.animatorPush("WeatherPage.qml", {"weather": savedWeathersModel.get(model.locationId),
+                                           "weatherModel": weatherModels[model.locationId] })
             }
 
             Image {
@@ -101,8 +101,8 @@ Page {
                 anchors.verticalCenter: labelColumn.verticalCenter
                 visible: model.status !== Weather.Loading
                 source: model.weatherType.length > 0 ? "image://theme/graphic-m-weather-" + model.weatherType
-                                                        + (highlighted ? "?" + Theme.highlightColor : "")
-                                                      : ""
+                                                       + (highlighted ? "?" + Theme.highlightColor : "")
+                                                     : ""
             }
             BusyIndicator {
                 running: model.status === Weather.Loading
