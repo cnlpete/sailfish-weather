@@ -38,6 +38,7 @@ ApplicationWindow {
         weather: savedWeathersModel.currentWeather
     }
     Instantiator {
+        asynchronous: true
         onObjectAdded: {
             var models = weatherModels ? weatherModels : {}
             models[object.locationId] = object
