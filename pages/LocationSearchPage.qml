@@ -68,7 +68,7 @@ Page {
                     return qsTrId("weather-la-search_and_select_location")
                 } else if (!loading && !delayedFilter.running && locationListView.count == 0) {
                     if (locationsModel.filter.length < 3) {
-                        //% "Type at least three characters to perform a search"
+                        //% "Could not find the location. Type at least three characters to perform a partial word search."
                         return qsTrId("weather-la-search_three_characters_required")
                     } else {
                         //% "Sorry, we couldn't find anything"
