@@ -90,7 +90,7 @@ Page {
             ListView.onAdd: AddAnimation { target: savedWeatherItem }
             ListView.onRemove: animateRemoval()
             menu: contextMenuComponent
-            contentHeight: labelColumn.implicitHeight + 2*Theme.paddingMedium
+            contentHeight: Math.max(Theme.itemSizeMedium, labelColumn.implicitHeight + 2 * Theme.paddingMedium)
             onClicked: {
                 pageStack.animatorPush("WeatherPage.qml", {"weather": savedWeathersModel.get(model.locationId),
                                            "weatherModel": weatherModels[model.locationId] })
@@ -101,6 +101,8 @@ Page {
                 x: Theme.horizontalPageMargin
                 anchors.verticalCenter: labelColumn.verticalCenter
                 visible: model.status !== Weather.Loading
+                width: Theme.iconSizeMedium
+                height: Theme.iconSizeMedium
                 source: model.weatherType.length > 0 ? "image://theme/graphic-m-weather-" + model.weatherType
                                                        + (highlighted ? "?" + Theme.highlightColor : "")
                                                      : ""
