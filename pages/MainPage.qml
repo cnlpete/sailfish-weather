@@ -103,7 +103,7 @@ Page {
                 visible: model.status !== Weather.Loading
                 width: Theme.iconSizeMedium
                 height: Theme.iconSizeMedium
-                source: model.weatherType.length > 0 ? "image://theme/graphic-m-weather-" + model.weatherType
+                source: model.weatherType.length > 0 ? "image://theme/icon-m-weather-" + model.weatherType
                                                        + (highlighted ? "?" + Theme.highlightColor : "")
                                                      : ""
             }
