@@ -50,7 +50,6 @@ void Sailfish::showView(QQuickView* view) {
     bool isDesktop = qApp->arguments().contains("-desktop");
 
     if (isDesktop) {
-        view->resize(480, 854);
         view->show();
     } else {
         view->showFullScreen();

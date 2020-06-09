@@ -6,6 +6,7 @@ Group:      System/Applications
 License:    Proprietary
 URL:        https://bitbucket.org/jolla/ui-sailfish-weather
 Source0:    %{name}-%{version}.tar.bz2
+Source1:    %{name}.privileges
 BuildRequires:  pkgconfig(Qt5Core)
 BuildRequires:  pkgconfig(Qt5Qml)
 BuildRequires:  pkgconfig(Qt5Quick)
@@ -50,6 +51,9 @@ desktop-file-install --delete-original       \
   --dir %{buildroot}%{_datadir}/applications             \
    %{buildroot}%{_datadir}/applications/*.desktop
 
+mkdir -p %{buildroot}%{_datadir}/mapplauncherd/privileges.d
+install -m 644 -p %{SOURCE1} %{buildroot}%{_datadir}/mapplauncherd/privileges.d/
+
 %files
 %defattr(-,root,root,-)
 %{_datadir}/applications/*.desktop
@@ -59,6 +63,7 @@ desktop-file-install --delete-original       \
 %{_datadir}/jolla-settings/entries/sailfish-weather.json
 %{_datadir}/jolla-settings/pages/sailfish-weather
 %{_datadir}/dbus-1/services/com.jolla.weather.service
+%{_datadir}/mapplauncherd/privileges.d/*
 %{_libdir}/qt5/qml/org/sailfishos/weather/settings
 
 %files ts-devel
