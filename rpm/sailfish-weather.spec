@@ -1,8 +1,7 @@
 Name:       sailfish-weather
 Summary:    Weather application
-Version:    0.1
+Version:    1.0.3
 Release:    1
-Group:      System/Applications
 License:    Proprietary
 URL:        https://bitbucket.org/jolla/ui-sailfish-weather
 Source0:    %{name}-%{version}.tar.bz2
@@ -21,7 +20,7 @@ BuildRequires: %{name}-all-translations
 Requires: %{name}-all-translations >= %{_all_translations_version}
 
 Requires:  sailfishsilica-qt5 >= 0.27.0
-Requires:  sailfish-components-weather-qt5 >= 0.2.6
+Requires:  sailfish-components-weather-qt5 >= 1.0.9
 Requires:  mapplauncherd-booster-silica-qt5
 Requires:  connman-qt5-declarative
 Requires:  jolla-settings-system
