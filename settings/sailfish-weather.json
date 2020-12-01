@@ -3,7 +3,7 @@
         {
             "path": "applications/sailfish-weather.desktop",
             "title": "Weather",
-            "type": "page",
+            "type": "application",
             "params": {
                 "source": "/usr/share/jolla-settings/pages/sailfish-weather/SettingsPage.qml"
             }

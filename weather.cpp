@@ -14,6 +14,10 @@ Q_DECL_EXPORT int main(int argc, char *argv[])
     translator->load(QLocale(), "weather", "-", TRANSLATIONS_PATH);
 
     QScopedPointer<QGuiApplication> app(Sailfish::createApplication(argc, argv));
+
+    app->setApplicationName(QStringLiteral("weather"));
+    app->setOrganizationName(QStringLiteral("org.sailfishos"));
+
     app->installTranslator(engineeringEnglish.data());
     app->installTranslator(translator.data());
 
