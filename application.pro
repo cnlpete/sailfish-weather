@@ -16,5 +16,5 @@ include(translations.pri)
 INSTALLS += dbus_service
 
 OTHER_FILES = \
-    com.jolla.weather.service
+    org.sailfishos.weather.service \
     rpm/sailfish-weather.spec

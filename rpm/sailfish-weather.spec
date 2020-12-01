@@ -61,7 +61,7 @@ install -m 644 -p %{SOURCE1} %{buildroot}%{_datadir}/mapplauncherd/privileges.d/
 %{_datadir}/translations/weather_eng_en.qm
 %{_datadir}/jolla-settings/entries/sailfish-weather.json
 %{_datadir}/jolla-settings/pages/sailfish-weather
-%{_datadir}/dbus-1/services/com.jolla.weather.service
+%{_datadir}/dbus-1/services/org.sailfishos.weather.service
 %{_datadir}/mapplauncherd/privileges.d/*
 %{_libdir}/qt5/qml/org/sailfishos/weather/settings
 
