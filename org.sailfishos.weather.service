@@ -1,0 +1,3 @@
+[D-BUS Service]
+Name=org.sailfishos.weather
+Exec=/usr/bin/sailjail -p sailfish-weather.desktop /usr/bin/sailfish-weather

@@ -14,16 +14,14 @@ BuildRequires:  desktop-file-utils
 BuildRequires:  pkgconfig(qdeclarative5-boostable)
 BuildRequires:  qt5-qttools
 BuildRequires:  qt5-qttools-linguist
-
-BuildRequires: %{name}-all-translations
-%define _all_translations_version %(rpm -q --queryformat "%%{version}-%%{release}" %{name}-all-translations)
-Requires: %{name}-all-translations >= %{_all_translations_version}
+BuildRequires:  oneshot
 
 Requires:  sailfishsilica-qt5 >= 0.27.0
 Requires:  sailfish-components-weather-qt5 >= 1.0.9
 Requires:  mapplauncherd-booster-silica-qt5
 Requires:  connman-qt5-declarative
 Requires:  jolla-settings-system
+%{_oneshot_requires_post}
 
 %description
 Sailfish-style Weather application
@@ -45,6 +43,7 @@ make %{_smp_mflags}
 rm -rf %{buildroot}
 
 %qmake5_install
+chmod +x %{buildroot}/%{_oneshotdir}/*
 
 desktop-file-install --delete-original       \
   --dir %{buildroot}%{_datadir}/applications             \
@@ -61,10 +60,16 @@ install -m 644 -p %{SOURCE1} %{buildroot}%{_datadir}/mapplauncherd/privileges.d/
 %{_datadir}/translations/weather_eng_en.qm
 %{_datadir}/jolla-settings/entries/sailfish-weather.json
 %{_datadir}/jolla-settings/pages/sailfish-weather
-%{_datadir}/dbus-1/services/com.jolla.weather.service
+%{_datadir}/dbus-1/services/org.sailfishos.weather.service
 %{_datadir}/mapplauncherd/privileges.d/*
 %{_libdir}/qt5/qml/org/sailfishos/weather/settings
+%{_oneshotdir}/sailfish-weather-move-data-to-new-location
 
 %files ts-devel
 %defattr(-,root,root,-)
 %{_datadir}/translations/source/weather.ts
+
+%post
+if [ $1 -eq 2 ]; then
+    add-oneshot --all-users sailfish-weather-move-data-to-new-location || :
+fi
