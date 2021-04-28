@@ -3,9 +3,9 @@
 TS_FILE = $$OUT_PWD/weather.ts
 EE_QM = $$OUT_PWD/weather_eng_en.qm
 
-ts.commands += lupdate $$PWD -ts $$TS_FILE
+ts.commands += lupdate $$PWD/.. -ts $$TS_FILE
 ts.output = $$TS_FILE
-ts.input = .
+ts.input = ..
 
 ts_install.files = $$TS_FILE
 ts_install.path = $$PREFIX/share/translations/source
