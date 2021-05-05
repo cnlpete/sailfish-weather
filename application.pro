@@ -11,7 +11,7 @@ dbus_service.files = org.sailfishos.weather.service
 dbus_service.path = /usr/share/dbus-1/services
 
 include(sailfishapplication/sailfishapplication.pri)
-include(translations.pri)
+include(translations/translations.pri)
 
 OTHER_FILES = \
     org.sailfishos.weather.service \
