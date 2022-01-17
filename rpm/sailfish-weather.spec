@@ -24,7 +24,6 @@ Requires:  sailfishsilica-qt5 >= 0.27.0
 Requires:  sailfish-components-weather-qt5 >= 1.0.9
 Requires:  mapplauncherd-booster-silica-qt5
 Requires:  connman-qt5-declarative
-Requires:  jolla-settings-system
 %{_oneshot_requires_post}
 
 %description
