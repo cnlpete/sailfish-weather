@@ -126,7 +126,7 @@ Page {
                     id: cityLabel
                     width: parent.width
                     color: highlighted ? Theme.highlightColor : Theme.primaryColor
-                    text: model.city
+                    text: model.city + ", " + model.country + (model.adminArea ? (", " + model.adminArea) : "")
                     truncationMode: TruncationMode.Fade
                 }
                 Label {
