@@ -126,7 +126,7 @@ Page {
                     id: cityLabel
                     width: parent.width
                     color: highlighted ? Theme.highlightColor : Theme.primaryColor
-                    text: model.city
+                    text: model.city + ", " + model.country + (model.adminArea ? (", " + model.adminArea) : "")
                     truncationMode: TruncationMode.Fade
                 }
                 Label {
@@ -178,6 +178,9 @@ Page {
                                         "locationId": model.locationId,
                                         "city": model.city,
                                         "state": model.state,
+                                        "adminArea": model.adminArea,
+                                        "adminArea2": model.adminArea2,
+                                        "station": model.station,
                                         "country": model.country,
                                         "temperature": model.temperature,
                                         "feelsLikeTemperature": model.feelsLikeTemperature,

@@ -112,7 +112,9 @@ Page {
                     "locationId": model.id,
                     "city": model.name,
                     "state": "",
-                    "country": model.country
+                    "country": model.country,
+                    "adminArea": model.adminArea,
+                    "adminArea2": model.adminArea2,
                 }
                 if (!savedWeathersModel.currentWeather
                         || savedWeathersModel.currentWeather.status === Weather.Error) {
@@ -141,9 +143,14 @@ Page {
                     truncationMode: TruncationMode.Fade
                 }
                 Label {
+                    // Order of location country string, "Country", "Admin Area", "Admin Area2"
+                    // e.g. "United States, Nevada, Clark"
+                    readonly property string countryString: model.country
+                                                            + (model.adminArea ? (", " + model.adminArea) : "")
+                                                            + (model.adminArea2 ? (", " + model.adminArea2) : "")
                     width: parent.width
                     textFormat: Text.StyledText
-                    text: Theme.highlightText(model.country, locationsModel.filter, Theme.highlightColor)
+                    text: Theme.highlightText(countryString, locationsModel.filter, Theme.highlightColor)
                     color: highlighted ? Theme.secondaryHighlightColor : Theme.secondaryColor
                     font.pixelSize: Theme.fontSizeSmall
                     truncationMode: TruncationMode.Fade
