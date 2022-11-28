@@ -220,12 +220,12 @@ Page {
         }
         footer: Item {
             width: parent.width
-            height: disclaimer.height
-            ProviderDisclaimer {
-                id: disclaimer
-                y: Math.max(0, Screen.height - weatherListView.contentHeight)
-                weather: savedWeathersModel.currentWeather
-            }
+            height: provider.height
+        }
+        ProviderDisclaimer {
+            id: provider
+            y: weatherListView.originY - weatherListView.contentY - height + Math.max(Screen.height, weatherListView.contentHeight)
+            weather: savedWeathersModel.currentWeather
         }
         VerticalScrollDecorator {}
     }
