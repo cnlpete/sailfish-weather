@@ -103,9 +103,10 @@ Page {
                 visible: model.status !== Weather.Loading
                 width: Theme.iconSizeMedium
                 height: Theme.iconSizeMedium
-                source: model.weatherType.length > 0 ? "image://theme/icon-m-weather-" + model.weatherType
-                                                       + (highlighted ? "?" + Theme.highlightColor : "")
-                                                     : ""
+                source: !!model.weatherType
+                        && model.weatherType.length > 0 ? "image://theme/icon-m-weather-" + model.weatherType
+                                                          + (highlighted ? "?" + Theme.highlightColor : "")
+                                                        : ""
             }
             BusyIndicator {
                 running: model.status === Weather.Loading
