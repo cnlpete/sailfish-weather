@@ -13,7 +13,7 @@ WeatherModel {
                 model.reload()
             }
         }
-        onReloadAll: model.reload()
+        onReloadAll: model.reload(true)
         onReloadAllIfAllowed: if (model.updateAllowed()) model.reload()
     }
 }
