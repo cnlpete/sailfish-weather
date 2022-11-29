@@ -103,9 +103,10 @@ Page {
                 visible: model.status !== Weather.Loading
                 width: Theme.iconSizeMedium
                 height: Theme.iconSizeMedium
-                source: model.weatherType.length > 0 ? "image://theme/icon-m-weather-" + model.weatherType
-                                                       + (highlighted ? "?" + Theme.highlightColor : "")
-                                                     : ""
+                source: !!model.weatherType
+                        && model.weatherType.length > 0 ? "image://theme/icon-m-weather-" + model.weatherType
+                                                          + (highlighted ? "?" + Theme.highlightColor : "")
+                                                        : ""
             }
             BusyIndicator {
                 running: model.status === Weather.Loading
@@ -219,12 +220,12 @@ Page {
         }
         footer: Item {
             width: parent.width
-            height: disclaimer.height
-            ProviderDisclaimer {
-                id: disclaimer
-                y: Math.max(0, Screen.height - weatherListView.contentHeight)
-                weather: savedWeathersModel.currentWeather
-            }
+            height: provider.height
+        }
+        ProviderDisclaimer {
+            id: provider
+            y: weatherListView.originY - weatherListView.contentY - height + Math.max(Screen.height, weatherListView.contentHeight)
+            weather: savedWeathersModel.currentWeather
         }
         VerticalScrollDecorator {}
     }

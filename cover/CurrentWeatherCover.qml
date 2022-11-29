@@ -7,7 +7,7 @@ Item {
         x: Theme.paddingLarge
         width: parent.width - 2*x
         topPadding: Theme.paddingLarge
-        text: weather.status === Weather.Error ? model.city : TemperatureConverter.format(weather.temperature) + " " + weather.city
+        text: weather.status === Weather.Error ? weather.city : TemperatureConverter.format(weather.temperature) + " " + weather.city
         //% "Loading failed"
         description: weather.status === Weather.Error ? qsTrId("weather-la-loading_failed") : weather.description
     }
