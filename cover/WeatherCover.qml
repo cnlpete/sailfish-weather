@@ -8,9 +8,10 @@ CoverBackground {
     property QtObject weather: savedWeathersModel.currentWeather
 
     property bool current: true
-    property bool ready: loaded && !error
+    property bool ready: loaded && !error  && !unauthorized
     property bool loaded: weather
     property bool error: loaded && savedWeathersModel.currentWeather.status == Weather.Error
+    property bool unauthorized: loaded && savedWeathersModel.currentWeather.status == Weather.Unauthorized
 
     function reload() {
         if (current) {
@@ -28,11 +29,20 @@ CoverBackground {
     CoverPlaceholder {
         visible: !ready
         icon.source: "image://theme/graphic-foreca-large"
-        text: !loaded ? //% "Select location to check weather"
-                        qsTrId("weather-la-select_location_to_check_weather")
-                      : error ? //% "Unable to connect, try again"
-                                qsTrId("weather-la-unable_to_connect_try_again")
-                              : ""
+        text: {
+            if (!loaded) {
+                //% "Select location to check weather"
+                return qsTrId("weather-la-select_location_to_check_weather")
+            } else if (error) {
+                //% "Unable to connect, try again"
+                return qsTrId("weather-la-unable_to_connect_try_again")
+            } else if (unauthorized) {
+                //% "Invalid authentication credentials"
+                return qsTrId("weather-la-unauthorized")
+            }
+
+            return ""
+        }
     }
     Loader {
         active: ready

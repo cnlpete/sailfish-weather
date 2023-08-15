@@ -27,9 +27,18 @@ Item {
             width: view.width
             visible: view.count <= 4 || !aboutToSlideIn
             topPadding: Theme.paddingLarge + Theme.paddingMedium
-            text: model.status === Weather.Error ? model.city : TemperatureConverter.format(model.temperature) + " " + model.city
-            //% "Loading failed"
-            description: model.status === Weather.Error ? qsTrId("weather-la-loading_failed") : model.description
+            text: (model.status === Weather.Error || model.status === Weather.Unauthorized) ? model.city : TemperatureConverter.format(model.temperature) + " " + model.city
+            description: {
+                if (model.status === Weather.Error) {
+                    //% "Loading failed"
+                    return qsTrId("weather-la-loading_failed")
+                } else if (model.status === Weather.Unauthorized) {
+                    //% "Invalid authentication credentials"
+                    return qsTrId("weather-la-unauthorized")
+                }
+
+                return model.description
+            }
         }
         path: Path {
             startX: view.width/2; startY: view.count > 4 ? -itemHeight/2 : itemHeight/2
