@@ -7,9 +7,18 @@ Item {
         x: Theme.paddingLarge
         width: parent.width - 2*x
         topPadding: Theme.paddingLarge
-        text: weather.status === Weather.Error ? weather.city : TemperatureConverter.format(weather.temperature) + " " + weather.city
-        //% "Loading failed"
-        description: weather.status === Weather.Error ? qsTrId("weather-la-loading_failed") : weather.description
+        text: (weather.status === Weather.Error || weather.status === Weather.Unauthorized) ? weather.city : TemperatureConverter.format(weather.temperature) + " " + weather.city
+        description: {
+            if (weather.status === Weather.Error) {
+                //% "Loading failed"
+                return qsTrId("weather-la-loading_failed")
+            } else if (weather.status === Weather.Unauthorized) {
+                //% "Invalid authentication credentials"
+                return qsTrId("weather-la-unauthorized")
+            }
+
+            return weather.description
+        }
     }
     WeatherImage {
         id: weatherImage

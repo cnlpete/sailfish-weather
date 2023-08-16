@@ -6,6 +6,7 @@ Page {
     id: page
 
     property bool error: locationsModel.status === Weather.Error
+    property bool unauthorized: locationsModel.status === Weather.Unauthorized
     property bool loading: locationsModel.status === Weather.Loading || loadingTimer.running
     objectName: "LocationSearchPage"
 
@@ -64,6 +65,9 @@ Page {
                 if (error) {
                     //% "Loading failed"
                     return qsTrId("weather-la-loading_failed")
+                } else if (unauthorized) {
+                    //% "Invalid authentication credentials"
+                    return qsTrId("weather-la-unauthorized")
                 } else if (locationsModel.filter.length === 0) {
                     //: Placeholder displayed when user hasn't yet typed a search string
                     //% "Search and select new location"

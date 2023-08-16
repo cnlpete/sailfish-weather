@@ -7,6 +7,7 @@ Page {
     SilicaListView {
         id: weatherListView
         PullDownMenu {
+            visible: savedWeathersModel.currentWeather.status !== Weather.Unauthorized
             MenuItem {
                 //% "New location"
                 text: qsTrId("weather-me-new_location")
@@ -47,11 +48,15 @@ Page {
                                                                   : Math.round(Screen.height/4))
             enabled: !currentWeatherAvailable || (savedWeathersModel.count === 0 && counter.active)
             error: savedWeathersModel.currentWeather && savedWeathersModel.currentWeather.status === Weather.Error
+            unauthorized: savedWeathersModel.currentWeather && savedWeathersModel.currentWeather.status === Weather.Unauthorized
             empty: !savedWeathersModel.currentWeather || savedWeathersModel.count == 0
             text: {
                 if (error) {
                     //% "Loading failed"
                     return qsTrId("weather-la-loading_failed")
+                } else if (unauthorized) {
+                    //% "Invalid authentication credentials"
+                    return qsTrId("weather-la-unauthorized")
                 } else if (empty) {
                     if (currentWeatherAvailable) {
                         if (counter.active) {
