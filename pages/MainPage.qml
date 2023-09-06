@@ -36,12 +36,32 @@ Page {
                     pageStack.animatorPush("WeatherPage.qml", {"weather": weather, "weatherModel": currentWeatherModel, "current": true })
                 }
             }
+
+            Label {
+                visible: !placeholder.enabled && currentWeatherAvailable && currentWeatherModel.status === Weather.Unauthorized
+                x: Theme.horizontalPageMargin
+                width: parent.width - 2*x
+                horizontalAlignment: Text.AlignHCenter
+                wrapMode: Text.Wrap
+                font {
+                    pixelSize: Theme.fontSizeLarge
+                    family: Theme.fontFamilyHeading
+                }
+
+                color: palette.highlightColor
+                opacity: 0.6
+
+                //% "Invalid authentication credentials"
+                text: qsTrId("weather-la-unauthorized")
+            }
+
             Item {
                 width: parent.width
                 height: Theme.paddingLarge
             }
         }
         PlaceholderItem {
+            id: placeholder
             flickable: weatherListView
             parent: weatherListView.contentItem
             y: weatherListView.originY + (currentWeatherAvailable ? Math.round(parent.height/12) + weatherListView.headerItem.height
